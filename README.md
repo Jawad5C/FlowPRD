@@ -231,48 +231,45 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 
 ## Getting Started
 
-**v1.0 Demo - Localhost Setup**
+**v1.0 Demo - Localhost Setup (5 minutes)**
 
-### Prerequisites
-- Python 3.9+
-- Node.js 16+
-- Claude API key (Anthropic)
+### Quick Install
 
-### Installation
 ```bash
-# Clone repository
-git clone https://github.com/Jawad5C/FlowPRD.git
-cd FlowPRD
-
-# Backend setup
+# 1. Backend Setup
 cd backend
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Add your CLAUDE_API_KEY to .env
+# Edit .env and add: CLAUDE_API_KEY=your_actual_key
 
-# Frontend setup
+# 2. Frontend Setup (new terminal)
 cd ../frontend
 npm install
+```
 
-# Run both servers
-# Terminal 1: Backend
+### Run Application
+
+```bash
+# Terminal 1: Start Backend
 cd backend && python app.py
+# → Running on http://localhost:5000
 
-# Terminal 2: Frontend
-cd frontend && npm start
+# Terminal 2: Start Frontend
+cd frontend && npm run dev
+# → Running on http://localhost:3000
 ```
 
 ### Usage
-1. Open http://localhost:3000
-2. Drag & drop your PRD file or paste text
-3. Click "Transform"
-4. View Hybrid and Flowchart-only versions side-by-side
-5. Toggle between formats
-6. Copy/download result
+1. **Open** `http://localhost:3000` in your browser
+2. **Upload** your PRD (.docx, .pdf, .txt, .md) or paste text
+3. **Transform** with AI (Claude Sonnet 4.5)
+4. **View** Hybrid (detailed) and Flowchart (90%+ UML) versions
+5. **Export** via copy-to-clipboard or download as Markdown
 
-**Test with included samples:**
-- Anchore PRD (blockchain document notary)
-- FlowPRD PRD (this project!)
+**Test Files:** Try this README.md as your first transformation!
+
+📖 **Full setup guide with troubleshooting:** [SETUP.md](SETUP.md)
 
 ---
 
