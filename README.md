@@ -1,10 +1,10 @@
-# FlowPRD - Visual PRD Generator
+# FlowPRD - AI-Powered Visual PRD Transformer
 
-**Project:** FlowPRD - Visual PRD Generator  
+**Project:** FlowPRD - AI-Powered Visual PRD Transformer  
 **Owner:** Yaasameen & Jawad  
 **Date:** February 3, 2026  
 **Version:** 1.0 MVP  
-**Status:** Draft
+**Status:** In Development
 
 ---
 
@@ -57,19 +57,53 @@ Enable product teams to transform any idea or existing PRD into a visual flowcha
 
 ## Proposed Solution
 
-Users need a visual, AI-friendly PRD template that clearly communicates project scope to both human teams and AI coding assistants using standardized flowchart shape semantics—combining the best of Confluence's structure, Notion's simplicity, and true AI compatibility.
+An **AI-powered web application** that transforms any existing PRD (text, Word, PDF, fragmented notes) into a visual, scannable Mermaid flowchart that both humans and AI coding assistants can instantly understand.
 
-**Solution Overview:**
-- Mermaid-based flowchart template following UML/flowchart conventions (ovals for start/end, diamonds for decisions, rectangles for processes, parallelograms for input/output)
-- Hybrid model combining visual structure with detailed text descriptions
-- AI-parseable format that can be directly fed into Cursor/Copilot (unlike Confluence/Notion output)
-- Lightweight, version-controllable (works with Git), and **free to use** (vs. Confluence $5-10/user/month, Productboard $20-60/user/month)
+### **How It Works:**
+
+**User Flow:**
+1. **Upload/Paste:** User uploads PRD file (.docx, .pdf, .txt, .md) or pastes text directly
+2. **AI Analysis:** Claude AI extracts and restructures content using standardized flowchart semantics
+3. **Transform:** System generates two versions simultaneously:
+   - **Hybrid:** Mermaid diagram + detailed text descriptions
+   - **Flowchart-only:** Pure visual flowchart (100% UML/flowchart compliant)
+4. **Display:** Side-by-side view with toggle between formats
+5. **Export:** User downloads/copies result (no storage, stateless)
+
+**Intelligent Gap Detection:**
+- **Primary:** AI restructures existing content (Option A)
+- **Secondary:** If PRD is missing sections, AI suggests what's missing (Option B)
+- User decides whether to fill gaps or proceed with current content
+
+### **Technical Architecture:**
+
+**Frontend:**
+- React/HTML with drag & drop file upload
+- Side-by-side display with format toggle
+- Real-time preview of Mermaid diagrams
+- Download/copy functionality
+
+**Backend:**
+- Python Flask API
+- File parsing libraries (python-docx, PyPDF2, markdown)
+- Claude API integration (Anthropic)
+- No database required (stateless transformations)
+
+**AI Processing:**
+- Claude Sonnet 4.5 for structured output
+- Follows UML/flowchart conventions (ovals, diamonds, rectangles, parallelograms)
+- Generates both Hybrid and Flowchart-only versions
 - 7-section framework: Problem, Opportunity, Users, Solution, Requirements, Metrics, Scope
 
+### **Deployment:**
+
+**v1.0 (Demo):** Localhost (like Anchore demo)  
+**v2.0 (Scale):** Vercel deployment with serverless functions
+
 **Competitive Advantage:**
-- **vs. Confluence:** Visual diagrams instead of text walls, free instead of $5-10/month, AI-parseable
-- **vs. Notion:** Standardized format (not custom databases), AI coding assistant integration
-- **vs. Productboard AI:** Generates visual flowcharts (not text), 100% free, version-controllable with Git
+- **vs. Confluence:** AI transforms text walls into visual diagrams, free, AI-parseable output
+- **vs. Notion:** Automated conversion (not manual), standardized flowchart format
+- **vs. Productboard AI:** Generates visual flowcharts (not text), accepts any input format, 100% free
 
 ---
 
@@ -79,85 +113,204 @@ Users need a visual, AI-friendly PRD template that clearly communicates project 
 
 | Feature ID | Feature Name | Description | Priority |
 |------------|--------------|-------------|----------|
-| FR-01 | Mermaid Template Generator | Pre-built template with flowchart shapes following conventions | P0 |
-| FR-02 | Visual PRD Structure | 7-section framework (Problem, Opportunity, Users, Solution, Requirements, Metrics, Scope) | P0 |
-| FR-03 | AI Parsing Compatibility | Output format readable by Cursor, Copilot, and ChatGPT (unlike Confluence/Notion) | P0 |
-| FR-04 | Shape Semantics Guide | Documentation on which shapes to use (ovals, diamonds, rectangles, parallelograms, etc.) | P0 |
-| FR-05 | Export Compatibility | Works in GitHub, GitLab, Bitbucket, and any Markdown viewer | P0 |
+| FR-01 | Multi-Format File Upload | Accept .docx, .pdf, .txt, .md files and direct text paste | P0 |
+| FR-02 | AI-Powered Parsing | Claude API extracts and restructures PRD content | P0 |
+| FR-03 | Dual Output Generation | Generate both Hybrid and Flowchart-only Mermaid versions | P0 |
+| FR-04 | Side-by-Side Display | Show both formats simultaneously with toggle capability | P0 |
+| FR-05 | Gap Detection | AI identifies missing PRD sections and suggests additions | P0 |
+| FR-06 | Export Functionality | Download/copy results in Markdown format | P0 |
+| FR-07 | Drag & Drop UI | Intuitive file upload interface | P0 |
 
 **Should-Have (P1):**
-- Example PRD templates for common use cases (SaaS app, mobile app, API service)
-- Markdown export functionality
-- Customizable color schemes for different sections
-- Confluence/Notion import adapter (convert existing PRDs to visual format)
+- Real-time preview as AI processes
+- Example PRD samples (Anchore, FlowPRD itself)
+- Customizable color schemes for diagrams
+- Processing status indicators
+- Error handling for malformed PRDs
 
 **Nice-to-Have (P2):**
-- Live preview editor
+- User accounts (save API preferences)
+- PRD history (view past conversions)
 - Team collaboration features
-- Version history tracking
+- Version comparison (v1 vs v2 diff)
+- Mobile app version
+
+**Out of Scope (v1.0):**
+- Database/storage (stateless only)
+- User authentication
+- Real-time collaboration
+- Multiple language support
 
 ---
 
 ## Technical Implementation
 
-**Frontend:**
-- Markdown/Mermaid.js for rendering
-- Static site or documentation platform (GitHub Pages, Notion, Confluence—works everywhere)
+**Frontend (React/HTML):**
+- React components for UI
+- Mermaid.js for diagram rendering
+- Drag & drop file upload (React-Dropzone)
+- Toggle component for Hybrid/Flowchart view
+- Copy-to-clipboard functionality
 
-**Backend:**
-- Template files stored as `.md` with embedded Mermaid code
-- No database required (templates are static files)
-- No proprietary format lock-in (unlike Confluence/Notion)
+**Backend (Python Flask):**
+```
+/api/upload      → Accept file uploads
+/api/transform   → Send to Claude, return Mermaid
+/api/status      → Check processing status
+```
+
+**File Processing:**
+- `python-docx` for .docx files
+- `PyPDF2` for .pdf files
+- `markdown` for .md files
+- Plain text parser for .txt
+
+**AI Integration:**
+- Anthropic Claude API (Sonnet 4.5)
+- Structured prompt for PRD transformation
+- Follows UML/flowchart shape conventions
+- Returns both Hybrid and Flowchart versions
+
+**Storage:**
+- No database required (stateless)
+- No file retention (privacy-first)
+- API key stored in backend .env only
 
 **Constraints:**
-- Must render in standard Markdown viewers
+- Maximum file size: 5MB (PRD documents)
 - Maximum template complexity: 50 nodes for readability
 - Compatible with all major AI coding assistants (Cursor, Copilot, Claude, ChatGPT)
-- Zero subscription costs (forever free)
+- Zero subscription costs (API costs only)
 
 ---
 
 ## Success Metrics (KPIs)
 
 **Performance:**
-- Template completion time: < 30 minutes (vs. 2+ hours for traditional Confluence/Notion PRDs)
-- AI comprehension rate: 90%+ accuracy when fed to Cursor/Copilot (vs. 40-50% for text-based PRDs)
+- PRD transformation time: < 30 seconds (vs. 2+ hours manual conversion)
+- AI accuracy: 90%+ correct structure extraction
+- Output quality: 95%+ AI coding assistant comprehension (Cursor/Copilot test)
 
 **Adoption:**
-- 100 downloads/uses in first month
-- 80% of users report "faster requirement communication than Confluence/Notion"
+- 100 conversions in first month
+- 80% of users report "clearer requirements than original PRD"
 - 50 GitHub stars in first quarter
 
 **Quality:**
+- Support for 4 file formats (.docx, .pdf, .txt, .md)
 - 0 ambiguous sections when reviewed by 3rd party developer
-- 95% of generated code matches intended requirements (vs. 60-70% with text PRDs)
+- Both Hybrid and Flowchart versions generated successfully 95%+ of time
 
 **Cost Savings:**
 - Users save $60-720/year vs. Confluence/Productboard subscriptions
+- Free to use (only API costs for hosting)
 
 ---
 
 ## Out of Scope (v1.0)
 
 ❌ **Not included in first version:**
-- Web-based template editor (users edit in their own IDE/text editor)
-- Real-time collaboration like Confluence (users share via Git/Google Docs)
+- Database/storage (stateless only - no history)
+- User accounts/authentication
+- Real-time collaboration like Confluence
 - Integration with Jira/Linear/project management tools
 - Multiple language support (English only initially)
 - Mobile app version
-- AI auto-generation of PRDs from natural language (template-based only for v1)
 - Direct Confluence/Notion export plugin
+- Batch processing (multiple PRDs at once)
+- Custom template creation
+
+**Future Scalability (v2.0+):**
+- ☁️ Vercel deployment (currently localhost only)
+- 📱 Mobile app version
+- 👥 User accounts and PRD history
+- 🌍 Multi-language support
+- 🔗 Project management tool integrations
 
 ---
 
 ## Getting Started
 
-Coming soon! This project is currently in the PRD phase.
+**v1.0 Demo - Localhost Setup**
+
+### Prerequisites
+- Python 3.9+
+- Node.js 16+
+- Claude API key (Anthropic)
+
+### Installation
+```bash
+# Clone repository
+git clone https://github.com/Jawad5C/FlowPRD.git
+cd FlowPRD
+
+# Backend setup
+cd backend
+pip install -r requirements.txt
+cp .env.example .env
+# Add your CLAUDE_API_KEY to .env
+
+# Frontend setup
+cd ../frontend
+npm install
+
+# Run both servers
+# Terminal 1: Backend
+cd backend && python app.py
+
+# Terminal 2: Frontend
+cd frontend && npm start
+```
+
+### Usage
+1. Open http://localhost:3000
+2. Drag & drop your PRD file or paste text
+3. Click "Transform"
+4. View Hybrid and Flowchart-only versions side-by-side
+5. Toggle between formats
+6. Copy/download result
+
+**Test with included samples:**
+- Anchore PRD (blockchain document notary)
+- FlowPRD PRD (this project!)
+
+---
+
+## Tech Stack
+
+**Frontend:** React, Mermaid.js, React-Dropzone  
+**Backend:** Python Flask, Claude API  
+**AI:** Anthropic Claude Sonnet 4.5  
+**File Processing:** python-docx, PyPDF2, markdown  
+**Deployment:** Localhost (v1), Vercel (v2)
+
+---
 
 ## Contributing
 
-Contributions welcome! Please read our contributing guidelines (coming soon).
+Contributions welcome! This project is in active development.
+
+1. Fork the repository
+2. Create your feature branch
+3. Submit a pull request
+
+---
 
 ## License
 
 [To be determined]
+
+---
+
+## Roadmap
+
+- [x] PRD Documentation
+- [ ] Backend API (Flask)
+- [ ] Frontend UI (React)
+- [ ] Claude API Integration
+- [ ] File Upload & Parsing
+- [ ] Dual Output Generation
+- [ ] Side-by-Side Display
+- [ ] Gap Detection Feature
+- [ ] Demo Testing (Anchore + FlowPRD samples)
+- [ ] Vercel Deployment (v2.0)
