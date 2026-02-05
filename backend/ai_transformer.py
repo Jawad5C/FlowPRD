@@ -1,16 +1,16 @@
 """
 AI Transformer Module
-Uses Claude API to transform PRD text into Mermaid diagrams
+Uses Google Gemini API to transform PRD text into Mermaid diagrams
 """
 
 from typing import Optional, Dict
 import os
-from anthropic import Anthropic
+import google.generativeai as genai
 
 
 def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
     """
-    Transform PRD text into Mermaid diagrams using Claude AI.
+    Transform PRD text into Mermaid diagrams using Gemini AI.
     
     Args:
         prd_text: The PRD content as text
@@ -18,16 +18,17 @@ def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
     Returns:
         Dictionary with 'hybrid' and 'flowchart' Mermaid code, or None if failed
     """
-    api_key = os.getenv('CLAUDE_API_KEY')
+    api_key = os.getenv('GEMINI_API_KEY')
     
     if not api_key:
-        print("❌ Error: CLAUDE_API_KEY not found in environment")
+        print("❌ Error: GEMINI_API_KEY not found in environment")
         return None
     
     try:
-        client = Anthropic(api_key=api_key)
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-1.5-pro')
         
-        # Create the prompt for Claude
+        # Create the prompt for Gemini
         prompt = f"""You are a PRD (Product Requirements Document) transformation expert. 
         
 Your task: Transform the following PRD into TWO Mermaid diagram formats:
@@ -65,37 +66,31 @@ GAPS:
 - [List any missing sections, or write "None" if complete]
 """
         
-        print("🤖 Calling Claude API...")
+        print("🤖 Calling Gemini API...")
         
-        message = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=8000,
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
+        response = model.generate_content(prompt)
+        response_text = response.text
         
-        response_text = message.content[0].text
         print(f"✅ Received response ({len(response_text)} chars)")
         
         # Parse the response
-        result = parse_claude_response(response_text)
+        result = parse_gemini_response(response_text)
         
         return result
         
     except Exception as e:
-        print(f"❌ Error calling Claude API: {e}")
+        print(f"❌ Error calling Gemini API: {e}")
         import traceback
         traceback.print_exc()
         return None
 
 
-def parse_claude_response(response: str) -> Dict[str, any]:
+def parse_gemini_response(response: str) -> Dict[str, any]:
     """
-    Parse Claude's response to extract Hybrid, Flowchart, and Gaps.
+    Parse Gemini's response to extract Hybrid, Flowchart, and Gaps.
     
     Args:
-        response: Raw response from Claude
+        response: Raw response from Gemini
         
     Returns:
         Dictionary with hybrid, flowchart, and gaps keys
@@ -146,7 +141,7 @@ def parse_claude_response(response: str) -> Dict[str, any]:
         return result
         
     except Exception as e:
-        print(f"Error parsing Claude response: {e}")
+        print(f"Error parsing Gemini response: {e}")
         return result
 
 

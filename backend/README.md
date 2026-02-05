@@ -12,14 +12,15 @@ pip install -r requirements.txt
 2. **Configure environment:**
 ```bash
 cp .env.example .env
-# Edit .env and add your CLAUDE_API_KEY
+# Edit .env and add your GEMINI_API_KEY
 ```
 
-3. **Get Claude API Key:**
-- Go to: https://console.anthropic.com/
-- Create account / Sign in
-- Generate API key
-- Add to `.env` file
+3. **Get Gemini API Key (FREE):**
+- Go to: https://aistudio.google.com/app/apikey
+- Sign in with Google account
+- Click "Create API Key"
+- Copy and add to `.env` file
+- No credit card required!
 
 4. **Run server:**
 ```bash
@@ -76,12 +77,18 @@ Max file size: 5MB (configurable in .env)
 
 ## AI Processing
 
-Uses Claude Sonnet 4.5 (Anthropic) to:
+Uses **Gemini 1.5 Pro** (Google - FREE) to:
 1. Parse PRD content
 2. Extract structure
 3. Generate Hybrid Mermaid diagram (visual + text)
 4. Generate Flowchart-only diagram (pure visual)
 5. Detect missing sections
+
+**Why Gemini?**
+- ✅ FREE (60 requests/minute)
+- ✅ 1M token context window
+- ✅ No credit card required
+- ✅ High-quality diagram generation
 
 ## Testing
 

@@ -241,7 +241,7 @@ cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Edit .env and add: CLAUDE_API_KEY=your_actual_key
+# Edit .env and add: GEMINI_API_KEY=your_actual_key
 
 # 2. Frontend Setup (new terminal)
 cd ../frontend
@@ -263,7 +263,7 @@ cd frontend && npm run dev
 ### Usage
 1. **Open** `http://localhost:3000` in your browser
 2. **Upload** your PRD (.docx, .pdf, .txt, .md) or paste text
-3. **Transform** with AI (Claude Sonnet 4.5)
+3. **Transform** with AI (Gemini 1.5 Pro - FREE!)
 4. **View** Hybrid (detailed) and Flowchart (90%+ UML) versions
 5. **Export** via copy-to-clipboard or download as Markdown
 
@@ -276,8 +276,8 @@ cd frontend && npm run dev
 ## Tech Stack
 
 **Frontend:** React, Mermaid.js, React-Dropzone  
-**Backend:** Python Flask, Claude API  
-**AI:** Anthropic Claude Sonnet 4.5  
+**Backend:** Python Flask, Gemini API  
+**AI:** Google Gemini 1.5 Pro (FREE - 1M tokens!)  
 **File Processing:** python-docx, PyPDF2, markdown  
 **Deployment:** Localhost (v1), Vercel (v2)
 

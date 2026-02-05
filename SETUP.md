@@ -11,7 +11,7 @@ Before you begin, ensure you have the following installed:
 - **Python 3.9+** - [Download here](https://www.python.org/downloads/)
 - **Node.js 18+** - [Download here](https://nodejs.org/)
 - **npm** (comes with Node.js)
-- **Claude API Key** - Get yours at [Anthropic Console](https://console.anthropic.com/)
+- **Gemini API Key** - Get yours at [Google AI Studio](https://aistudio.google.com/app/apikey) - FREE!
 
 ---
 
@@ -39,8 +39,8 @@ pip install -r requirements.txt
 # Create .env file
 cp .env.example .env
 
-# Edit .env and add your Claude API key
-# CLAUDE_API_KEY=your_actual_api_key_here
+# Edit .env and add your Gemini API key
+# GEMINI_API_KEY=your_actual_api_key_here
 ```
 
 ### 3. Frontend Setup
@@ -136,11 +136,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**Problem:** `Claude API error`
+**Problem:** `Gemini API error`
 ```bash
 # Check your .env file
 cat .env
-# Make sure CLAUDE_API_KEY is set correctly
+# Make sure GEMINI_API_KEY is set correctly
 ```
 
 **Problem:** `Port 5000 already in use`
@@ -264,7 +264,7 @@ FlowPRD/
 
 ### Backend
 - **Flask 3.0.0** - Web framework
-- **Anthropic Claude Sonnet 4.5** - AI transformation
+- **Google Gemini 1.5 Pro** - FREE AI transformation (1M tokens!)
 - **python-docx 1.1.0** - Word document parsing
 - **PyPDF2 3.0.1** - PDF parsing
 - **python-dotenv 1.0.0** - Environment management
