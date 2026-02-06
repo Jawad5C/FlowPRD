@@ -63,13 +63,19 @@ If a section is MISSING, create node with text "[Section Missing - Needs Definit
      * parallelogram: 50-70 chars
      * hexagon: 40-60 chars
      * cylinder: 30-50 chars
-   - Position nodes vertically with good spacing (y: 0, 150, 300, etc.)
+   - CRITICAL: Position nodes with LARGE vertical spacing
+     * y-coordinates: 0, 250, 500, 750, 1000, 1250, etc.
+     * Minimum 250px between each node vertically
+     * Keep x-coordinate centered at 400 for main flow
    - Connect related nodes with arrows
 
 2. **FLOWCHART VERSION**: Simplified workflow diagram
    - Show main flow only (Problem → Solution → Requirements → Implementation)
    - Shorter text (20-40 chars per node)
    - Use proper shapes for workflow (stadium for start/end, diamond for decisions)
+   - CRITICAL: Large vertical spacing
+     * y-coordinates: 0, 250, 500, 750, 1000, etc.
+     * Minimum 250px between nodes
    - Clear top-to-bottom flow
 
 PRD CONTENT:
