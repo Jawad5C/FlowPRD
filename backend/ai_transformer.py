@@ -134,7 +134,7 @@ def parse_gemini_response(response: str) -> Dict[str, any]:
             if '```mermaid' in hybrid_section:
                 start = hybrid_section.find('```mermaid') + len('```mermaid')
                 end = hybrid_section.find('```', start)
-                result['hybrid'] = hybrid_section[start:end].strip()
+                result['hybrid'] = clean_mermaid_syntax(hybrid_section[start:end].strip())
         
         # Extract FLOWCHART section
         if 'FLOWCHART:' in response:
@@ -145,7 +145,7 @@ def parse_gemini_response(response: str) -> Dict[str, any]:
             if '```mermaid' in flowchart_section:
                 start = flowchart_section.find('```mermaid') + len('```mermaid')
                 end = flowchart_section.find('```', start)
-                result['flowchart'] = flowchart_section[start:end].strip()
+                result['flowchart'] = clean_mermaid_syntax(flowchart_section[start:end].strip())
         
         # Extract GAPS section
         if 'GAPS:' in response:
@@ -166,6 +166,58 @@ def parse_gemini_response(response: str) -> Dict[str, any]:
     except Exception as e:
         print(f"Error parsing Gemini response: {e}")
         return result
+
+
+def clean_mermaid_syntax(mermaid_code: str) -> str:
+    """
+    Clean Mermaid code to ensure valid syntax.
+    Removes problematic characters and fixes common issues.
+    """
+    import re
+    
+    # Split into lines
+    lines = mermaid_code.split('\n')
+    cleaned_lines = []
+    
+    for line in lines:
+        # Skip empty lines
+        if not line.strip():
+            continue
+            
+        # Keep the flowchart declaration as-is
+        if line.strip().startswith('flowchart'):
+            cleaned_lines.append(line)
+            continue
+        
+        # For node definitions and connections
+        # Remove problematic characters from text inside quotes
+        def clean_quoted_text(match):
+            text = match.group(1)
+            # Remove problematic characters
+            text = text.replace('(', '').replace(')', '')
+            text = text.replace('[', '').replace(']', '')
+            text = text.replace('{', '').replace('}', '')
+            text = text.replace(':', ' -')
+            text = text.replace(';', ',')
+            text = text.replace('|', ' ')
+            text = text.replace('\\', ' ')
+            text = text.replace('<', '').replace('>', '')
+            text = text.replace('"', "'")  # Replace inner quotes with apostrophes
+            text = text.replace('`', "'")
+            # Clean up multiple spaces
+            text = re.sub(r'\s+', ' ', text).strip()
+            return f'["{text}"]'
+        
+        # Clean text inside brackets with quotes
+        line = re.sub(r'\["([^"]+)"\]', clean_quoted_text, line)
+        
+        # Ensure arrows are clean
+        line = line.replace('-->', ' --> ')
+        line = re.sub(r'\s+', ' ', line).strip()
+        
+        cleaned_lines.append(line)
+    
+    return '\n'.join(cleaned_lines)
 
 
 if __name__ == '__main__':
