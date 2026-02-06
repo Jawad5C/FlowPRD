@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ShapeProps {
   type: string;
   text: string;
+  fullText: string;  // NEW: Full PRD content for tooltip
   x: number;
   y: number;
   color: string;
@@ -30,7 +31,9 @@ const wrapText = (text: string, maxCharsPerLine: number): string[] => {
   return lines;
 };
 
-const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 220, height = 80 }) => {
+const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width = 220, height = 80 }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   // Calculate max characters per line based on shape width
   // Special handling for shapes with angled/curved sides
   let usableWidthPercent = 0.9;
@@ -242,10 +245,96 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 220, hei
     );
   };
   
+  // Render hover tooltip with full PRD text
+  const renderTooltip = () => {
+    if (!showTooltip) return null;
+    
+    const tooltipWidth = 400;
+    const tooltipPadding = 20;
+    const tooltipLineHeight = 22;
+    
+    // Wrap full text for tooltip
+    const tooltipLines = wrapText(fullText, 60); // ~60 chars per line for tooltip
+    const tooltipHeight = (tooltipLines.length * tooltipLineHeight) + (tooltipPadding * 2);
+    
+    // Position tooltip above the shape
+    const tooltipX = x;
+    const tooltipY = y - finalHeight / 2 - tooltipHeight - 20;
+    
+    return (
+      <g>
+        {/* Tooltip background with shadow */}
+        <rect
+          x={tooltipX - tooltipWidth / 2}
+          y={tooltipY}
+          width={tooltipWidth}
+          height={tooltipHeight}
+          fill="#1E293B"
+          stroke="#64748B"
+          strokeWidth="2"
+          rx="8"
+          filter="url(#tooltip-shadow)"
+        />
+        
+        {/* Tooltip text */}
+        <text
+          x={tooltipX}
+          y={tooltipY + tooltipPadding + 14}
+          textAnchor="middle"
+          fill="#F1F5F9"
+          fontSize="14"
+          fontFamily="Arial, sans-serif"
+        >
+          {tooltipLines.map((line, i) => (
+            <tspan 
+              key={i}
+              x={tooltipX}
+              y={tooltipY + tooltipPadding + 14 + (i * tooltipLineHeight)}
+              textAnchor="middle"
+            >
+              {line}
+            </tspan>
+          ))}
+        </text>
+        
+        {/* Tooltip arrow pointing to shape */}
+        <path
+          d={`M ${tooltipX - 10} ${tooltipY + tooltipHeight}
+              L ${tooltipX} ${tooltipY + tooltipHeight + 10}
+              L ${tooltipX + 10} ${tooltipY + tooltipHeight}
+              Z`}
+          fill="#1E293B"
+          stroke="#64748B"
+          strokeWidth="1"
+        />
+      </g>
+    );
+  };
+  
   return (
-    <g>
+    <g 
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+      style={{ cursor: 'pointer' }}
+    >
+      {/* Define shadow filter for tooltip */}
+      <defs>
+        <filter id="tooltip-shadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+          <feOffset dx="0" dy="4" result="offsetblur"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.3"/>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
       {renderShape()}
       {renderText()}
+      {renderTooltip()}
     </g>
   );
 };

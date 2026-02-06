@@ -29,9 +29,12 @@ def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
         model = genai.GenerativeModel('gemini-2.5-flash')
         
         # Create the prompt for Gemini
-        prompt = f"""You are a PRD analysis expert. Transform this PRD into a structured JSON diagram.
+        prompt = f"""You are a PRD validation and education tool. Your job is to:
+1. Parse the PRD document
+2. Create a visual flowchart showing ALL standard PRD sections
+3. For missing sections, show placeholder with AI suggestion
 
-CRITICAL: Output ONLY valid JSON. Use these 7 shape types:
+CRITICAL: Output ONLY valid JSON.
 
 Shape Types & Colors:
 1. "stadium" - Start/End/Users/Actors - Color: "#10B981" (green)
@@ -42,41 +45,70 @@ Shape Types & Colors:
 6. "hexagon" - Constraints/Rules/Principles - Color: "#EF4444" (red)
 7. "cylinder" - Databases/Storage/Data - Color: "#06B6D4" (cyan)
 
-PRD Sections to Extract:
-- Problem/Pain Points → rounded_box (blue)
-- Users/Actors → stadium (green)
-- Solution/Features → rectangle (purple)
-- Functional Requirements → parallelogram (orange)
-- Technical Decisions → diamond (yellow)
-- Constraints/Rules → hexagon (red)
-- Data/Storage → cylinder (cyan)
+MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
 
-If a section is MISSING, create node with text "[Section Missing - Needs Definition]"
+1. **Problem/Pain Points** (rounded_box, blue)
+   - Summary: 30-50 chars
+   - Full text: Complete problem description from PRD
+   - If missing: "[Problem Missing]" + suggest "What user problem does this solve?"
 
-1. **HYBRID VERSION**: Detailed diagram with rich text in shapes
-   - Extract ALL PRD sections
-   - Choose appropriate shape for each section type
-   - Text length by shape:
-     * rounded_box/rectangle: 80-120 chars (can be long, will wrap)
-     * stadium: 40-60 chars
-     * diamond: 15-25 chars (keep SHORT)
-     * parallelogram: 50-70 chars
-     * hexagon: 40-60 chars
-     * cylinder: 30-50 chars
-   - CRITICAL: Position nodes with LARGE vertical spacing
-     * y-coordinates: 0, 250, 500, 750, 1000, 1250, etc.
-     * Minimum 250px between each node vertically
-     * Keep x-coordinate centered at 400 for main flow
-   - Connect related nodes with arrows
+2. **Opportunity** (rounded_box, blue)  
+   - Summary: 30-50 chars
+   - Full text: Market opportunity, why now?
+   - If missing: "[Opportunity Missing]" + suggest "What's the market opportunity?"
 
-2. **FLOWCHART VERSION**: Simplified workflow diagram
-   - Show main flow only (Problem → Solution → Requirements → Implementation)
-   - Shorter text (20-40 chars per node)
-   - Use proper shapes for workflow (stadium for start/end, diamond for decisions)
-   - CRITICAL: Large vertical spacing
-     * y-coordinates: 0, 250, 500, 750, 1000, etc.
-     * Minimum 250px between nodes
-   - Clear top-to-bottom flow
+3. **Target Users & Needs** (stadium, green)
+   - Summary: 30-50 chars
+   - Full text: Who are the users and what do they need?
+   - If missing: "[Users Missing]" + suggest "Who will use this product?"
+
+4. **Proposed Solution** (rectangle, purple)
+   - Summary: 30-50 chars
+   - Full text: What are we building? Key features?
+   - If missing: "[Solution Missing]" + suggest "What solution are you proposing?"
+
+5. **Functional Requirements** (parallelogram, orange)
+   - Summary: 30-50 chars (e.g. "FR-01, FR-02, FR-03...")
+   - Full text: All functional requirements with details
+   - If missing: "[Requirements Missing]" + suggest "List must-have features"
+
+6. **Technical Implementation** (cylinder, cyan)
+   - Summary: 30-50 chars
+   - Full text: Tech stack, architecture, databases
+   - If missing: "[Tech Stack Missing]" + suggest "What technologies will you use?"
+
+7. **Success Metrics** (hexagon, red)
+   - Summary: 30-50 chars
+   - Full text: How will you measure success? KPIs?
+   - If missing: "[Metrics Missing]" + suggest "How will you measure success?"
+
+8. **Out of Scope** (hexagon, red)
+   - Summary: 30-50 chars
+   - Full text: What are we NOT building?
+   - If missing: "[Scope Missing]" + suggest "What features are excluded?"
+
+9. **Timeline/Phases** (diamond, yellow)
+   - Summary: 30-50 chars
+   - Full text: Project phases, milestones, dates
+   - If missing: "[Timeline Missing]" + suggest "What's the delivery timeline?"
+
+10. **Dependencies/Risks** (diamond, yellow)
+    - Summary: 30-50 chars
+    - Full text: External dependencies, risks, blockers
+    - If missing: "[Dependencies Missing]" + suggest "What could block this project?"
+
+POSITIONING RULES:
+- Start at y=100, then increment by 250px (100, 350, 600, 850, 1100, 1350, 1600, 1850, 2100, 2350)
+- All nodes centered at x=400
+- Connect each node to the next (A→B→C→D→E→F→G→H→I→J)
+
+CONTENT EXTRACTION RULES:
+- If section EXISTS: Extract actual content
+  * Summary: Intelligently condense to 30-50 chars
+  * Full text: Include complete content (max 500 chars, summarize if longer)
+- If section MISSING: 
+  * Summary: "[Section Name Missing]"
+  * Full text: "⚠️ Missing Section: [Name]\\n\\nSuggestion: [contextual hint based on what IS in the document]"
 
 PRD CONTENT:
 {prd_text}
@@ -84,25 +116,31 @@ PRD CONTENT:
 Return in this EXACT JSON format:
 
 {{
-  "hybrid": {{
-    "nodes": [
-      {{"id": "A", "shape": "rounded_box", "text": "Problem: ...", "x": 400, "y": 50, "color": "#3B82F6"}},
-      {{"id": "B", "shape": "stadium", "text": "Users: ...", "x": 400, "y": 200, "color": "#10B981"}}
-    ],
-    "connections": [
-      {{"from": "A", "to": "B", "label": ""}}
-    ]
-  }},
-  "flowchart": {{
-    "nodes": [
-      {{"id": "A", "shape": "stadium", "text": "Start", "x": 400, "y": 50, "color": "#10B981"}},
-      {{"id": "B", "shape": "rectangle", "text": "Analyze", "x": 400, "y": 150, "color": "#8B5CF6"}}
-    ],
-    "connections": [
-      {{"from": "A", "to": "B", "label": ""}}
-    ]
-  }},
-  "gaps": ["Missing sections or empty array"]
+  "nodes": [
+    {{
+      "id": "A",
+      "shape": "rounded_box",
+      "text": "Problem: User summary here",
+      "fullText": "Complete problem description from PRD document...",
+      "x": 400,
+      "y": 100,
+      "color": "#3B82F6"
+    }},
+    {{
+      "id": "B",
+      "shape": "rounded_box",
+      "text": "[Opportunity Missing]",
+      "fullText": "⚠️ Missing Section: Opportunity\\n\\nSuggestion: Based on the problem you described, consider explaining why now is the right time to solve this. What market trends support this solution?",
+      "x": 400,
+      "y": 350,
+      "color": "#3B82F6"
+    }}
+  ],
+  "connections": [
+    {{"from": "A", "to": "B", "label": ""}},
+    {{"from": "B", "to": "C", "label": ""}}
+  ],
+  "gaps": ["Opportunity", "Timeline/Phases"]
 }}
 """
         
@@ -127,20 +165,20 @@ Return in this EXACT JSON format:
 
 def parse_gemini_response(response: str) -> Dict[str, any]:
     """
-    Parse Gemini's JSON response to extract Hybrid, Flowchart, and Gaps.
+    Parse Gemini's JSON response to extract diagram nodes and connections.
     
     Args:
         response: Raw response from Gemini (should be JSON)
         
     Returns:
-        Dictionary with hybrid, flowchart, and gaps keys
+        Dictionary with nodes, connections, and gaps keys
     """
     import json
     import re
     
     result = {
-        'hybrid': {'nodes': [], 'connections': []},
-        'flowchart': {'nodes': [], 'connections': []},
+        'nodes': [],
+        'connections': [],
         'gaps': []
     }
     
@@ -160,11 +198,11 @@ def parse_gemini_response(response: str) -> Dict[str, any]:
         # Parse JSON
         data = json.loads(json_str)
         
-        result['hybrid'] = data.get('hybrid', result['hybrid'])
-        result['flowchart'] = data.get('flowchart', result['flowchart'])
+        result['nodes'] = data.get('nodes', [])
+        result['connections'] = data.get('connections', [])
         result['gaps'] = data.get('gaps', [])
         
-        print(f"📊 Parsed: Hybrid={len(result['hybrid'].get('nodes', []))} nodes, Flowchart={len(result['flowchart'].get('nodes', []))} nodes, Gaps={len(result['gaps'])}")
+        print(f"📊 Parsed: {len(result['nodes'])} nodes, {len(result['connections'])} connections, {len(result['gaps'])} gaps")
         
         return result
         
@@ -183,6 +221,6 @@ if __name__ == '__main__':
     result = transform_to_mermaid(test_text)
     if result:
         print("\n✅ Test successful!")
-        print(f"Hybrid nodes: {len(result['hybrid'].get('nodes', []))}")
-        print(f"Flowchart nodes: {len(result['flowchart'].get('nodes', []))}")
+        print(f"Nodes: {len(result['nodes'])}")
+        print(f"Connections: {len(result['connections'])}")
         print(f"Gaps detected: {result['gaps']}")

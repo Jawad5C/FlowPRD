@@ -6,6 +6,7 @@ interface Node {
   id: string;
   shape: string;
   text: string;
+  fullText: string;  // NEW: Full PRD content for hover tooltip
   x: number;
   y: number;
   color: string;
@@ -23,8 +24,8 @@ interface DiagramData {
 }
 
 interface TransformResult {
-  hybrid: DiagramData;
-  flowchart: DiagramData;
+  nodes: Node[];
+  connections: Connection[];
   gaps: string[];
   inputLength: number;
 }
@@ -54,8 +55,8 @@ const App: React.FC = () => {
         
         if (data.success) {
           setResult({
-            hybrid: data.hybrid,
-            flowchart: data.flowchart,
+            nodes: data.nodes,
+            connections: data.connections,
             gaps: data.gaps_detected || [],
             inputLength: data.input_length
           });
@@ -75,8 +76,8 @@ const App: React.FC = () => {
         
         if (data.success) {
           setResult({
-            hybrid: data.hybrid,
-            flowchart: data.flowchart,
+            nodes: data.nodes,
+            connections: data.connections,
             gaps: data.gaps_detected || [],
             inputLength: data.input_length
           });

@@ -101,8 +101,8 @@ def transform_prd():
         
         return jsonify({
             'success': True,
-            'hybrid': result['hybrid'],
-            'flowchart': result['flowchart'],
+            'nodes': result['nodes'],
+            'connections': result['connections'],
             'gaps_detected': result.get('gaps', []),
             'input_length': len(prd_text)
         })

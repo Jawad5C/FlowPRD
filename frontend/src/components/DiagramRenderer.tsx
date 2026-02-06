@@ -5,6 +5,7 @@ interface Node {
   id: string;
   shape: string;
   text: string;
+  fullText: string;  // NEW: Full PRD content for tooltip
   x: number;
   y: number;
   color: string;
@@ -107,6 +108,7 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
           key={node.id}
           type={node.shape}
           text={node.text}
+          fullText={node.fullText}
           x={node.x}
           y={node.y}
           color={node.color}
