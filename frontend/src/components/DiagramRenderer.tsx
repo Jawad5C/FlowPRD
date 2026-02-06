@@ -41,21 +41,33 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
   // Find node by ID
   const findNode = (id: string) => nodes.find(n => n.id === id);
   
-  // Render arrow between nodes
+  // Render arrow between nodes (handles both horizontal and vertical connections)
   const renderConnection = (conn: Connection) => {
     const fromNode = findNode(conn.from);
     const toNode = findNode(conn.to);
     
     if (!fromNode || !toNode) return null;
     
-    // Adjust offsets based on shape type (diamonds are taller)
-    const fromOffset = fromNode.shape === 'diamond' ? 100 : 70;
-    const toOffset = toNode.shape === 'diamond' ? 100 : 70;
+    // Determine if connection is horizontal (same row) or vertical (different rows)
+    const isHorizontal = Math.abs(fromNode.y - toNode.y) < 100;
+    const isGoingRight = toNode.x > fromNode.x;
+    const isGoingDown = toNode.y > fromNode.y;
     
-    const x1 = fromNode.x;
-    const y1 = fromNode.y + fromOffset; // Bottom of from node
-    const x2 = toNode.x;
-    const y2 = toNode.y - toOffset; // Top of to node
+    let x1, y1, x2, y2;
+    
+    if (isHorizontal) {
+      // Horizontal connection (same row)
+      x1 = fromNode.x + (isGoingRight ? 180 : -180); // Right or left edge
+      y1 = fromNode.y;
+      x2 = toNode.x - (isGoingRight ? 180 : -180); // Left or right edge
+      y2 = toNode.y;
+    } else {
+      // Vertical connection (different rows)
+      x1 = fromNode.x;
+      y1 = fromNode.y + 80; // Bottom of from node
+      x2 = toNode.x;
+      y2 = toNode.y - 80; // Top of to node
+    }
     
     return (
       <g key={`${conn.from}-${conn.to}`}>
@@ -117,8 +129,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
           x={node.x}
           y={node.y}
           color={node.color}
-          width={280}
-          height={100}
+          width={320}
+          height={120}
         />
       ))}
     </svg>

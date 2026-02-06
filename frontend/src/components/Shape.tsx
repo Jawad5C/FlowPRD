@@ -3,13 +3,24 @@ import React, { useState } from 'react';
 interface ShapeProps {
   type: string;
   text: string;
-  fullText: string;  // NEW: Full PRD content for tooltip
+  fullText: string;  // Full PRD content for tooltip
   x: number;
   y: number;
   color: string;
   width?: number;
   height?: number;
 }
+
+// Shape type labels for display
+const shapeLabels: { [key: string]: string } = {
+  stadium: "START/END/USERS",
+  rectangle: "FEATURES/ACTIONS",
+  rounded_box: "PROBLEM/SOLUTION",
+  parallelogram: "REQUIREMENTS",
+  diamond: "DECISIONS/QUESTIONS",
+  hexagon: "CONSTRAINTS/RULES",
+  cylinder: "DATABASES/STORAGE"
+};
 
 // Helper function to wrap text to fit within width
 const wrapText = (text: string, maxCharsPerLine: number): string[] => {
@@ -31,7 +42,7 @@ const wrapText = (text: string, maxCharsPerLine: number): string[] => {
   return lines;
 };
 
-const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width = 220, height = 80 }) => {
+const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width = 320, height = 120 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   
   // Calculate max characters per line based on shape width
@@ -42,16 +53,17 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
   if (type === 'parallelogram') usableWidthPercent = 0.8; // Slanted sides
   
   const usableWidth = width * usableWidthPercent;
-  const maxCharsPerLine = Math.floor(usableWidth / 9); // ~9px per character at 15px font
+  const maxCharsPerLine = Math.floor(usableWidth / 10); // ~10px per character at 17px font
   
   // Wrap text to fit within shape
   const textLines = wrapText(text, maxCharsPerLine);
   
   // Adjust height if text needs more space
-  const fontSize = 15;
-  const lineHeight = 20;
-  const paddingVertical = 25;
-  const requiredHeight = (textLines.length * lineHeight) + paddingVertical;
+  const fontSize = 17;
+  const lineHeight = 24;
+  const paddingVertical = 35;
+  const labelHeight = 20; // Space for shape type label
+  const requiredHeight = (textLines.length * lineHeight) + paddingVertical + labelHeight;
   const finalHeight = Math.max(height, requiredHeight);
   
   const renderShape = () => {
@@ -220,9 +232,29 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
     }
   };
   
+  // Render shape type label (small text at top)
+  const renderLabel = () => {
+    const labelY = y - finalHeight / 2 + 16; // Near top of shape
+    
+    return (
+      <text
+        x={x}
+        y={labelY}
+        textAnchor="middle"
+        fill="#94A3B8"
+        fontSize="10"
+        fontFamily="Arial, sans-serif"
+        fontWeight="600"
+        opacity="0.8"
+      >
+        {shapeLabels[type] || type.toUpperCase()}
+      </text>
+    );
+  };
+  
   // Render text with proper wrapping
   const renderText = () => {
-    const startY = y - (textLines.length * lineHeight) / 2 + fontSize / 2;
+    const startY = y - (textLines.length * lineHeight) / 2 + fontSize / 2 + 10; // Offset for label
     
     return (
       <text
@@ -333,6 +365,7 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
       </defs>
       
       {renderShape()}
+      {renderLabel()}
       {renderText()}
       {renderTooltip()}
     </g>
