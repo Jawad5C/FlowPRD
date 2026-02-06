@@ -45,57 +45,51 @@ Shape Types & Colors:
 6. "hexagon" - Constraints/Rules/Principles - Color: "#EF4444" (red)
 7. "cylinder" - Databases/Storage/Data - Color: "#06B6D4" (cyan)
 
+CRITICAL COLOR OVERRIDE:
+- If a section is MISSING, ALWAYS use color: "#EF4444" (red) regardless of shape type
+- This provides instant visual identification of gaps in the PRD
+
 MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
 
-1. **Problem/Pain Points** (rounded_box, blue)
-   - Summary: 30-50 chars
-   - Full text: Complete problem description from PRD
-   - If missing: "[Problem Missing]" + suggest "What user problem does this solve?"
+1. **Problem/Pain Points** (rounded_box)
+   - If EXISTS: color="#3B82F6" (blue), full content
+   - If MISSING: color="#EF4444" (RED), text="[Problem Missing]", suggest "What user problem does this solve?"
 
-2. **Opportunity** (rounded_box, blue)  
-   - Summary: 30-50 chars
-   - Full text: Market opportunity, why now?
-   - If missing: "[Opportunity Missing]" + suggest "What's the market opportunity?"
+2. **Opportunity** (rounded_box)
+   - If EXISTS: color="#3B82F6" (blue), full content
+   - If MISSING: color="#EF4444" (RED), text="[Opportunity Missing]", suggest "What's the market opportunity?"
 
-3. **Target Users & Needs** (stadium, green)
-   - Summary: 30-50 chars
-   - Full text: Who are the users and what do they need?
-   - If missing: "[Users Missing]" + suggest "Who will use this product?"
+3. **Target Users & Needs** (stadium)
+   - If EXISTS: color="#10B981" (green), full content
+   - If MISSING: color="#EF4444" (RED), text="[Users Missing]", suggest "Who will use this product?"
 
-4. **Proposed Solution** (rectangle, purple)
-   - Summary: 30-50 chars
-   - Full text: What are we building? Key features?
-   - If missing: "[Solution Missing]" + suggest "What solution are you proposing?"
+4. **Proposed Solution** (rectangle)
+   - If EXISTS: color="#8B5CF6" (purple), full content
+   - If MISSING: color="#EF4444" (RED), text="[Solution Missing]", suggest "What solution are you proposing?"
 
-5. **Functional Requirements** (parallelogram, orange)
-   - Summary: 30-50 chars (e.g. "FR-01, FR-02, FR-03...")
-   - Full text: All functional requirements with details
-   - If missing: "[Requirements Missing]" + suggest "List must-have features"
+5. **Functional Requirements** (parallelogram)
+   - If EXISTS: color="#F59E0B" (orange), full content
+   - If MISSING: color="#EF4444" (RED), text="[Requirements Missing]", suggest "List must-have features"
 
-6. **Technical Implementation** (cylinder, cyan)
-   - Summary: 30-50 chars
-   - Full text: Tech stack, architecture, databases
-   - If missing: "[Tech Stack Missing]" + suggest "What technologies will you use?"
+6. **Technical Implementation** (cylinder)
+   - If EXISTS: color="#06B6D4" (cyan), full content
+   - If MISSING: color="#EF4444" (RED), text="[Tech Stack Missing]", suggest "What technologies will you use?"
 
-7. **Success Metrics** (hexagon, red)
-   - Summary: 30-50 chars
-   - Full text: How will you measure success? KPIs?
-   - If missing: "[Metrics Missing]" + suggest "How will you measure success?"
+7. **Success Metrics** (hexagon)
+   - If EXISTS: color="#EF4444" (red - semantic for constraints), full content
+   - If MISSING: color="#EF4444" (RED), text="[Metrics Missing]", suggest "How will you measure success?"
 
-8. **Out of Scope** (hexagon, red)
-   - Summary: 30-50 chars
-   - Full text: What are we NOT building?
-   - If missing: "[Scope Missing]" + suggest "What features are excluded?"
+8. **Out of Scope** (hexagon)
+   - If EXISTS: color="#EF4444" (red - semantic for constraints), full content
+   - If MISSING: color="#EF4444" (RED), text="[Scope Missing]", suggest "What features are excluded?"
 
-9. **Timeline/Phases** (diamond, yellow)
-   - Summary: 30-50 chars
-   - Full text: Project phases, milestones, dates
-   - If missing: "[Timeline Missing]" + suggest "What's the delivery timeline?"
+9. **Timeline/Phases** (diamond)
+   - If EXISTS: color="#EAB308" (yellow), full content
+   - If MISSING: color="#EF4444" (RED), text="[Timeline Missing]", suggest "What's the delivery timeline?"
 
-10. **Dependencies/Risks** (diamond, yellow)
-    - Summary: 30-50 chars
-    - Full text: External dependencies, risks, blockers
-    - If missing: "[Dependencies Missing]" + suggest "What could block this project?"
+10. **Dependencies/Risks** (diamond)
+    - If EXISTS: color="#EAB308" (yellow), full content
+    - If MISSING: color="#EF4444" (RED), text="[Dependencies Missing]", suggest "What could block this project?"
 
 POSITIONING RULES - ORGANIC FLOW LAYOUT (matching reference spatial pattern):
 - CRITICAL: Use EXACTLY these coordinates for branching flow:
