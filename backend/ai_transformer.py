@@ -31,36 +31,42 @@ def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
         # Create the prompt for Gemini
         prompt = f"""You are a Mermaid diagram expert. Transform this PRD into TWO valid Mermaid flowcharts.
 
-CRITICAL MERMAID SYNTAX RULES:
-- Start with: flowchart TD
-- Node IDs: Use simple alphanumeric (A, B, C1, step1, etc.)
-- Node text: Use quotes for special characters ["Text here"]
-- Avoid: parentheses, brackets, colons, quotes in text
-- Connections: Use --> for arrows
-- Keep text SHORT (under 50 chars per node)
+CRITICAL RULES - FOLLOW EXACTLY:
+1. Start EVERY diagram with: flowchart TD
+2. Node IDs: ONLY letters/numbers (A, B, C, step1, etc.) - NO spaces, NO special chars
+3. Node text: ALWAYS use double quotes ["text here"]
+4. NEVER use these characters in text: ( ) [ ] {{ }} : ; | \\ < >
+5. Replace special chars: Use dash for hyphen, spell out symbols
+6. Line breaks: Use <br/> tag (not \\n or br)
+7. Arrows: ONLY use -->
 
-Example VALID syntax:
+VALID EXAMPLE:
 flowchart TD
-    A["Problem Identified"] --> B["Analyze Requirements"]
-    B --> C["Design Solution"]
-    C --> D["Implement"]
+    A["Start - User identifies problem"] --> B["Analyze requirements and constraints"]
+    B --> C["Design solution with 3 key features"]
+    C --> D["Implement and test"]
 
-1. **HYBRID VERSION**: Detailed flowchart with RICH text inside nodes
-   - Use flowchart shapes: ([Oval]), [Rectangle], {{"{{"}}Diamond{{"}}"}}, [/Parallelogram/]
-   - Include ALL key PRD sections (Problem, Solution, Users, Requirements, etc.)
-   - IMPORTANT: Put substantial text IN the nodes:
-     * If section text is short (1-3 sentences): Include COMPLETE text in node
-     * If section text is long: Include PARAGRAPH SUMMARY (3-5 sentences) in node
-     * Aim for 100-200 characters per node for detailed context
-   - Use line breaks (br tag) to format long text
-   - Use simple connections
+INVALID (DO NOT DO):
+- A[Start: Problem] ❌ (colon breaks it)
+- B("Text with (parens)") ❌ (parentheses break it)
+- C{{Decision?}} ❌ (question mark breaks it)
 
-2. **FLOWCHART-ONLY VERSION**: Clean visual workflow
-   - Start/End: ([text])
-   - Process: [text]
-   - Decision: {{"{{"}}text{{"}}"}}
-   - Input/Output: [/text/]
-   - Maximum visual clarity
+1. **HYBRID VERSION**: Detailed flowchart with RICH text
+   - Use these shapes ONLY:
+     * Start/End: A["text"]  (keep it simple, no fancy shapes)
+     * Process: B["text"]
+     * Decision: C["text"]
+   - Include ALL PRD sections (Problem, Solution, Requirements, etc.)
+   - Put DETAILED text in nodes:
+     * Short sections: Complete text (remove special chars)
+     * Long sections: 100-200 char summary (remove special chars)
+   - Use <br/> for line breaks in long text
+   - CLEAN text of ALL special characters before putting in nodes
+
+2. **FLOWCHART-ONLY VERSION**: Simple visual workflow
+   - Same syntax rules as Hybrid
+   - Shorter text (10-30 chars per node)
+   - Focus on flow, not details
 
 PRD CONTENT:
 {prd_text}
