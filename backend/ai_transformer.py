@@ -50,81 +50,86 @@ CRITICAL COLOR OVERRIDE:
 - This provides instant visual identification of gaps in the PRD
 - Red is RESERVED for missing sections only
 
-MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
+MANDATORY NODES (create ALL 12, including START/END):
 
-1. **Problem/Pain Points** (rounded_box)
+0. **START** (stadium, green)
+   - Always present: text="START", color="#10B981" (green)
+
+1. **Problem/Pain Points** (rectangle - UML activity)
    - If EXISTS: color="#3B82F6" (blue), full content
    - If MISSING: color="#EF4444" (RED), text="[Problem Missing]", suggest "What user problem does this solve?"
 
-2. **Opportunity** (rounded_box)
+2. **Opportunity** (rectangle - UML activity)
    - If EXISTS: color="#3B82F6" (blue), full content
    - If MISSING: color="#EF4444" (RED), text="[Opportunity Missing]", suggest "What's the market opportunity?"
 
-3. **Target Users & Needs** (stadium)
+3. **Target Users & Needs** (rectangle - UML activity)
    - If EXISTS: color="#10B981" (green), full content
    - If MISSING: color="#EF4444" (RED), text="[Users Missing]", suggest "Who will use this product?"
 
-4. **Proposed Solution** (rectangle)
+4. **Proposed Solution** (rectangle - UML activity)
    - If EXISTS: color="#8B5CF6" (purple), full content
    - If MISSING: color="#EF4444" (RED), text="[Solution Missing]", suggest "What solution are you proposing?"
 
-5. **Functional Requirements** (parallelogram)
+5. **Functional Requirements** (rectangle - UML activity)
    - If EXISTS: color="#F59E0B" (orange), full content
    - If MISSING: color="#EF4444" (RED), text="[Requirements Missing]", suggest "List must-have features"
 
-6. **Technical Implementation** (cylinder)
+6. **Technical Implementation** (cylinder - data/resources)
    - If EXISTS: color="#06B6D4" (cyan), full content
    - If MISSING: color="#EF4444" (RED), text="[Tech Stack Missing]", suggest "What technologies will you use?"
 
-7. **Success Metrics** (hexagon)
+7. **Success Metrics** (rectangle - UML activity)
    - If EXISTS: color="#EC4899" (pink), full content
    - If MISSING: color="#EF4444" (RED), text="[Metrics Missing]", suggest "How will you measure success?"
 
-8. **Out of Scope** (hexagon)
+8. **Out of Scope** (rectangle - UML activity)
    - If EXISTS: color="#EC4899" (pink), full content
    - If MISSING: color="#EF4444" (RED), text="[Scope Missing]", suggest "What features are excluded?"
 
-9. **Timeline/Phases** (diamond)
+9. **Timeline/Phases** (diamond - UML decision)
    - If EXISTS: color="#EAB308" (yellow), full content
    - If MISSING: color="#EF4444" (RED), text="[Timeline Missing]", suggest "What's the delivery timeline?"
 
-10. **Dependencies/Risks** (diamond)
+10. **Dependencies/Risks** (diamond - UML decision)
     - If EXISTS: color="#EAB308" (yellow), full content
     - If MISSING: color="#EF4444" (RED), text="[Dependencies Missing]", suggest "What could block this project?"
 
-POSITIONING RULES - ORGANIC FLOW LAYOUT (matching reference spatial pattern):
-- CRITICAL: Use EXACTLY these coordinates for branching flow:
-  
-  START (Left side):
-  * Node 1 (Problem): x=200, y=250
-  * Node 2 (Opportunity): x=200, y=550
-  
-  CONVERGE POINT (Center-left):
-  * Node 3 (Users): x=550, y=400
-  
-  SOLUTION BRANCH (Center):
-  * Node 4 (Solution): x=900, y=250
-  * Node 5 (Requirements): x=900, y=550
-  
-  PARALLEL PATHS (Right side):
-  * Node 6 (Tech Stack): x=1250, y=150
-  * Node 7 (Metrics): x=1250, y=400
-  * Node 8 (Out of Scope): x=1250, y=650
-  
-  FINAL CONVERGENCE (Far right):
-  * Node 9 (Timeline): x=1600, y=300
-  * Node 10 (Dependencies): x=1600, y=550
+11. **END** (stadium, green)
+    - Always present: text="END", color="#10B981" (green)
 
-- Connect nodes in SEQUENTIAL PRD order (A→B→C→D→E→F→G→H→I→J):
-  Node 1 (Problem) → Node 2 (Opportunity)
-  Node 2 (Opportunity) → Node 3 (Users)
-  Node 3 (Users) → Node 4 (Solution)
-  Node 4 (Solution) → Node 5 (Requirements)
-  Node 5 (Requirements) → Node 6 (Tech Stack)
-  Node 6 (Tech Stack) → Node 7 (Metrics)
-  Node 7 (Metrics) → Node 8 (Out of Scope)
-  Node 8 (Out of Scope) → Node 9 (Timeline)
-  Node 9 (Timeline) → Node 10 (Dependencies)
+POSITIONING RULES - UML-ALIGNED ORGANIC FLOW (12 nodes with START/END):
+- CRITICAL: Use EXACTLY these coordinates:
+  
+  START NODE:
+  * Node 0 (START): x=100, y=400
+  
+  LEFT SIDE (Problem/Opportunity):
+  * Node 1 (Problem): x=300, y=250
+  * Node 2 (Opportunity): x=300, y=550
+  
+  CENTER-LEFT (Users):
+  * Node 3 (Users): x=650, y=400
+  
+  CENTER (Solution/Requirements):
+  * Node 4 (Solution): x=1000, y=250
+  * Node 5 (Requirements): x=1000, y=550
+  
+  RIGHT SIDE (Implementation):
+  * Node 6 (Tech Stack): x=1350, y=150
+  * Node 7 (Metrics): x=1350, y=400
+  * Node 8 (Out of Scope): x=1350, y=650
+  
+  FAR RIGHT (Timeline/Dependencies):
+  * Node 9 (Timeline): x=1700, y=300
+  * Node 10 (Dependencies): x=1700, y=550
+  
+  END NODE:
+  * Node 11 (END): x=1950, y=450
+
+- Connect nodes in SEQUENTIAL ORDER (START→1→2→3→4→5→6→7→8→9→10→END):
+  START → Problem → Opportunity → Users → Solution → Requirements
+  → Tech Stack → Metrics → Out of Scope → Timeline → Dependencies → END
 
 CONTENT EXTRACTION RULES:
 - If section EXISTS: Extract actual content
@@ -137,32 +142,42 @@ CONTENT EXTRACTION RULES:
 PRD CONTENT:
 {prd_text}
 
-Return in this EXACT JSON format:
+Return in this EXACT JSON format (12 nodes including START/END):
 
 {{
   "nodes": [
     {{
+      "id": "START",
+      "shape": "stadium",
+      "text": "START",
+      "fullText": "Beginning of PRD analysis",
+      "x": 100,
+      "y": 400,
+      "color": "#10B981"
+    }},
+    {{
       "id": "A",
-      "shape": "rounded_box",
+      "shape": "rectangle",
       "text": "Problem: User summary here",
       "fullText": "Complete problem description from PRD document...",
-      "x": 400,
-      "y": 100,
+      "x": 300,
+      "y": 250,
       "color": "#3B82F6"
     }},
     {{
-      "id": "B",
-      "shape": "rounded_box",
-      "text": "[Opportunity Missing]",
-      "fullText": "⚠️ Missing Section: Opportunity\\n\\nSuggestion: Based on the problem you described, consider explaining why now is the right time to solve this. What market trends support this solution?",
-      "x": 400,
-      "y": 350,
-      "color": "#3B82F6"
+      "id": "END",
+      "shape": "stadium",
+      "text": "END",
+      "fullText": "End of PRD analysis",
+      "x": 1950,
+      "y": 450,
+      "color": "#10B981"
     }}
   ],
   "connections": [
+    {{"from": "START", "to": "A", "label": ""}},
     {{"from": "A", "to": "B", "label": ""}},
-    {{"from": "B", "to": "C", "label": ""}}
+    {{"from": "J", "to": "END", "label": ""}}
   ],
   "gaps": ["Opportunity", "Timeline/Phases"]
 }}
