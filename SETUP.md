@@ -55,7 +55,6 @@ npm install
 # This will install:
 # - React 19.2.4
 # - Vite 6.2.0
-# - Mermaid 10.9.0
 # - TypeScript 5.8.2
 ```
 
@@ -109,9 +108,9 @@ You should see:
    - **Click** the upload area to browse files
    - **Switch to text mode** and paste your PRD directly
 
-3. **Click "Transform to Mermaid"**
+3. **Click "Transform to Visual Diagram"**
    - AI will analyze your PRD
-   - Generate both Hybrid and Flowchart versions
+   - Generate visual flowchart with all 10 standard sections
    - Detect any missing sections
 
 4. **View Results:**
@@ -165,10 +164,11 @@ npm install
 lsof -ti:3000 | xargs kill -9
 ```
 
-**Problem:** Mermaid diagrams not rendering
+**Problem:** Diagrams not rendering
 - Hard refresh browser: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R` (Windows)
 - Check browser console for errors
 - Ensure backend is running
+- Hover over shapes to see full text tooltips
 
 ### Network Issues (Train/Limited Connectivity)
 
@@ -273,7 +273,7 @@ FlowPRD/
 - **React 19.2.4** - UI framework
 - **TypeScript 5.8.2** - Type safety
 - **Vite 6.2.0** - Build tool & dev server
-- **Mermaid 10.9.0** - Diagram rendering
+- **Custom SVG Rendering** - 7 shape types for PRD visualization
 
 ---
 
