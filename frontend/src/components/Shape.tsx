@@ -32,9 +32,14 @@ const wrapText = (text: string, maxCharsPerLine: number): string[] => {
 
 const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 220, height = 80 }) => {
   // Calculate max characters per line based on shape width
-  // For hexagons, reduce usable width due to angled sides
-  const usableWidth = type === 'hexagon' ? width * 0.7 : width * 0.9;
-  const maxCharsPerLine = Math.floor(usableWidth / 9); // ~9px per character at 14px font
+  // Special handling for shapes with angled/curved sides
+  let usableWidthPercent = 0.9;
+  if (type === 'hexagon') usableWidthPercent = 0.65;  // Angled sides reduce space
+  if (type === 'diamond') usableWidthPercent = 0.5;   // Diamond is very narrow
+  if (type === 'parallelogram') usableWidthPercent = 0.8; // Slanted sides
+  
+  const usableWidth = width * usableWidthPercent;
+  const maxCharsPerLine = Math.floor(usableWidth / 9); // ~9px per character at 15px font
   
   // Wrap text to fit within shape
   const textLines = wrapText(text, maxCharsPerLine);
