@@ -120,14 +120,16 @@ POSITIONING RULES - ORGANIC FLOW LAYOUT (matching reference spatial pattern):
   * Node 9 (Timeline): x=1600, y=300
   * Node 10 (Dependencies): x=1600, y=550
 
-- Connect nodes with branching and convergence:
-  A→C, B→C (Problem and Opportunity converge to Users)
-  C→D, C→E (Users branches to Solution and Requirements)
-  D→F, E→F (Solution and Requirements converge to Tech Stack)
-  D→G (Solution to Metrics)
-  E→H (Requirements to Out of Scope)
-  F→I, G→I (Tech Stack and Metrics converge to Timeline)
-  H→J, I→J (Out of Scope and Timeline to Dependencies)
+- Connect nodes in SEQUENTIAL PRD order (A→B→C→D→E→F→G→H→I→J):
+  Node 1 (Problem) → Node 2 (Opportunity)
+  Node 2 (Opportunity) → Node 3 (Users)
+  Node 3 (Users) → Node 4 (Solution)
+  Node 4 (Solution) → Node 5 (Requirements)
+  Node 5 (Requirements) → Node 6 (Tech Stack)
+  Node 6 (Tech Stack) → Node 7 (Metrics)
+  Node 7 (Metrics) → Node 8 (Out of Scope)
+  Node 8 (Out of Scope) → Node 9 (Timeline)
+  Node 9 (Timeline) → Node 10 (Dependencies)
 
 CONTENT EXTRACTION RULES:
 - If section EXISTS: Extract actual content
