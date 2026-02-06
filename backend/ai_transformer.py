@@ -54,10 +54,10 @@ INVALID (DO NOT DO):
 1. **HYBRID VERSION**: Detailed flowchart with RICH text and VARIED shapes
    - USE THESE EXACT SHAPE FORMATS WITH TEXT LENGTH RULES:
      * Rectangle ["text"]: Detailed text BUT break into lines using <br/>
-       - CRITICAL: Each line max 40-50 characters
-       - Use <br/> to break text every 40-50 chars
-       - Creates 3:1 length-to-width ratio (tall, not wide)
-       - Example: ["Users need better PRD tools.<br/>Current solutions are expensive.<br/>Missing visual representation."]
+       - CRITICAL: Each line max 60-70 characters
+       - Use <br/> to break text every 60-70 chars
+       - Creates 2:1 length-to-width ratio
+       - Example: ["Users need better PRD visualization tools that are affordable.<br/>Current solutions like Confluence and Notion are expensive.<br/>Teams struggle with dense text-only requirements documents."]
      * Oval/Stadium (["text"]): Medium text (50-80 chars) - use for Start/End/Actors
      * Diamond {{"text"}}: SHORT text ONLY (10-30 chars max) - use for Decisions/Questions
      * Parallelogram [/"text"/]: Medium text (40-60 chars) - use for Input/Output
