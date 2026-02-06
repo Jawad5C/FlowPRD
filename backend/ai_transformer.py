@@ -42,12 +42,13 @@ Shape Types & Colors:
 3. "rounded_box" - Problem/Solution/Descriptions - Color: "#3B82F6" (blue)
 4. "parallelogram" - Functional Requirements - Color: "#F59E0B" (orange)
 5. "diamond" - Decisions/Questions/Status - Color: "#EAB308" (yellow)
-6. "hexagon" - Constraints/Rules/Principles - Color: "#EF4444" (red)
+6. "hexagon" - Constraints/Rules/Principles - Color: "#EC4899" (pink)
 7. "cylinder" - Databases/Storage/Data - Color: "#06B6D4" (cyan)
 
 CRITICAL COLOR OVERRIDE:
 - If a section is MISSING, ALWAYS use color: "#EF4444" (red) regardless of shape type
 - This provides instant visual identification of gaps in the PRD
+- Red is RESERVED for missing sections only
 
 MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
 
@@ -76,11 +77,11 @@ MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
    - If MISSING: color="#EF4444" (RED), text="[Tech Stack Missing]", suggest "What technologies will you use?"
 
 7. **Success Metrics** (hexagon)
-   - If EXISTS: color="#EF4444" (red - semantic for constraints), full content
+   - If EXISTS: color="#EC4899" (pink), full content
    - If MISSING: color="#EF4444" (RED), text="[Metrics Missing]", suggest "How will you measure success?"
 
 8. **Out of Scope** (hexagon)
-   - If EXISTS: color="#EF4444" (red - semantic for constraints), full content
+   - If EXISTS: color="#EC4899" (pink), full content
    - If MISSING: color="#EF4444" (RED), text="[Scope Missing]", suggest "What features are excluded?"
 
 9. **Timeline/Phases** (diamond)
