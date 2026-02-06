@@ -26,7 +26,7 @@ def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
     
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-1.5-pro')
+        model = genai.GenerativeModel('gemini-1.5-pro-latest')
         
         # Create the prompt for Gemini
         prompt = f"""You are a PRD (Product Requirements Document) transformation expert. 
