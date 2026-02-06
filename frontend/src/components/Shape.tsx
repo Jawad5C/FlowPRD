@@ -10,10 +10,39 @@ interface ShapeProps {
   height?: number;
 }
 
-const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, height = 80 }) => {
-  const textLines = text.split('\n');
+// Helper function to wrap text to fit within width
+const wrapText = (text: string, maxCharsPerLine: number): string[] => {
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+
+  words.forEach(word => {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    if (testLine.length <= maxCharsPerLine) {
+      currentLine = testLine;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+  
+  if (currentLine) lines.push(currentLine);
+  return lines;
+};
+
+const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 220, height = 80 }) => {
+  // Calculate max characters per line based on shape width
+  const maxCharsPerLine = Math.floor(width / 8); // ~8px per character
+  
+  // Wrap text to fit within shape
+  const textLines = wrapText(text, maxCharsPerLine);
+  
+  // Adjust height if text needs more space
   const fontSize = 14;
   const lineHeight = 18;
+  const paddingVertical = 20;
+  const requiredHeight = (textLines.length * lineHeight) + paddingVertical;
+  const finalHeight = Math.max(height, requiredHeight);
   
   const renderShape = () => {
     switch (type) {
@@ -23,10 +52,10 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
           <g>
             <rect
               x={x - width / 2}
-              y={y - height / 2}
+              y={y - finalHeight / 2}
               width={width}
-              height={height}
-              rx={height / 2}
+              height={finalHeight}
+              rx={finalHeight / 2}
               fill={color}
               stroke="#fff"
               strokeWidth="2"
@@ -40,9 +69,9 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
           <g>
             <rect
               x={x - width / 2}
-              y={y - height / 2}
+              y={y - finalHeight / 2}
               width={width}
-              height={height}
+              height={finalHeight}
               fill={color}
               stroke="#fff"
               strokeWidth="2"
@@ -56,9 +85,9 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
           <g>
             <rect
               x={x - width / 2}
-              y={y - height / 2}
+              y={y - finalHeight / 2}
               width={width}
-              height={height}
+              height={finalHeight}
               rx="10"
               fill={color}
               stroke="#fff"
@@ -73,10 +102,10 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
         return (
           <g>
             <path
-              d={`M ${x - width / 2 + skew} ${y - height / 2}
-                  L ${x + width / 2 + skew} ${y - height / 2}
-                  L ${x + width / 2 - skew} ${y + height / 2}
-                  L ${x - width / 2 - skew} ${y + height / 2}
+              d={`M ${x - width / 2 + skew} ${y - finalHeight / 2}
+                  L ${x + width / 2 + skew} ${y - finalHeight / 2}
+                  L ${x + width / 2 - skew} ${y + finalHeight / 2}
+                  L ${x - width / 2 - skew} ${y + finalHeight / 2}
                   Z`}
               fill={color}
               stroke="#fff"
@@ -86,8 +115,8 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
         );
       
       case 'diamond':
-        // Diamond (Decisions/Questions)
-        const diamondSize = Math.max(width, height) * 0.7;
+        // Diamond (Decisions/Questions) - Keep compact
+        const diamondSize = Math.max(width * 1.2, finalHeight * 1.2);
         return (
           <g>
             <path
@@ -106,7 +135,7 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
       case 'hexagon':
         // Hexagon (Constraints/Rules)
         const hexWidth = width * 0.85;
-        const hexHeight = height;
+        const hexHeight = finalHeight;
         const offset = hexWidth * 0.2;
         return (
           <g>
@@ -127,7 +156,7 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
       
       case 'cylinder':
         // Cylinder (Databases/Storage)
-        const cylHeight = height - 20;
+        const cylHeight = finalHeight - 20;
         const ellipseRy = 10;
         return (
           <g>
@@ -181,12 +210,12 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
     }
   };
   
-  // Render text
+  // Render text with proper wrapping
   const renderText = () => {
+    const startY = y - (textLines.length * lineHeight) / 2 + fontSize / 2;
+    
     return (
       <text
-        x={x}
-        y={y - (textLines.length * lineHeight) / 2 + fontSize}
         textAnchor="middle"
         fill="#fff"
         fontSize={fontSize}
@@ -194,7 +223,11 @@ const Shape: React.FC<ShapeProps> = ({ type, text, x, y, color, width = 200, hei
         fontWeight="500"
       >
         {textLines.map((line, i) => (
-          <tspan key={i} x={x} dy={i === 0 ? 0 : lineHeight}>
+          <tspan 
+            key={i} 
+            x={x} 
+            y={startY + (i * lineHeight)}
+          >
             {line}
           </tspan>
         ))}

@@ -29,10 +29,10 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
   const { nodes, connections } = data;
   
   // Calculate SVG dimensions based on node positions
-  const maxX = Math.max(...nodes.map(n => n.x)) + 200;
-  const maxY = Math.max(...nodes.map(n => n.y)) + 100;
-  const minX = Math.min(...nodes.map(n => n.x)) - 200;
-  const minY = Math.min(...nodes.map(n => n.y)) - 100;
+  const maxX = Math.max(...nodes.map(n => n.x)) + 300;
+  const maxY = Math.max(...nodes.map(n => n.y)) + 200;
+  const minX = Math.min(...nodes.map(n => n.x)) - 300;
+  const minY = Math.min(...nodes.map(n => n.y)) - 200;
   
   const width = maxX - minX;
   const height = maxY - minY;
@@ -48,9 +48,9 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
     if (!fromNode || !toNode) return null;
     
     const x1 = fromNode.x;
-    const y1 = fromNode.y + 40; // Bottom of from node
+    const y1 = fromNode.y + 60; // Bottom of from node (more space for tall shapes)
     const x2 = toNode.x;
-    const y2 = toNode.y - 40; // Top of to node
+    const y2 = toNode.y - 60; // Top of to node (more space for tall shapes)
     
     return (
       <g key={`${conn.from}-${conn.to}`}>
