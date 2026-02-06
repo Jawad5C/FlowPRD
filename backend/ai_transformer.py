@@ -29,41 +29,54 @@ def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
         model = genai.GenerativeModel('gemini-2.5-flash')
         
         # Create the prompt for Gemini
-        prompt = f"""You are a PRD (Product Requirements Document) transformation expert. 
-        
-Your task: Transform the following PRD into TWO Mermaid diagram formats:
+        prompt = f"""You are a Mermaid diagram expert. Transform this PRD into TWO valid Mermaid flowcharts.
 
-1. **HYBRID VERSION**: Combine visual Mermaid flowchart with detailed text descriptions
-   - Use proper flowchart shapes: ovals (start/end), diamonds (decisions), rectangles (processes), parallelograms (input/output), hexagons (constraints), cylinders (databases)
-   - Include all 7 sections: Problem, Opportunity, Users, Solution, Requirements, Metrics, Scope
-   - Add detailed text descriptions under each section
-   - Use color classes for visual distinction
+CRITICAL MERMAID SYNTAX RULES:
+- Start with: flowchart TD
+- Node IDs: Use simple alphanumeric (A, B, C1, step1, etc.)
+- Node text: Use quotes for special characters ["Text here"]
+- Avoid: parentheses, brackets, colons, quotes in text
+- Connections: Use --> for arrows
+- Keep text SHORT (under 50 chars per node)
 
-2. **FLOWCHART-ONLY VERSION**: Pure visual flowchart following strict UML/flowchart conventions
-   - 90%+ proper shape usage (ovals, diamonds, rectangles, parallelograms)
-   - Show PRD creation/analysis workflow
-   - Minimal text, maximum visual clarity
-   - Sequential process flow
+Example VALID syntax:
+flowchart TD
+    A["Problem Identified"] --> B["Analyze Requirements"]
+    B --> C["Design Solution"]
+    C --> D["Implement"]
 
-Also identify any GAPS in the PRD (missing sections like Success Metrics, Out of Scope, etc.)
+1. **HYBRID VERSION**: Detailed flowchart with rich descriptions
+   - Use flowchart shapes: ([Oval]), [Rectangle], {{"{{"}}Diamond{{"}}"}}, [/Parallelogram/]
+   - Include key PRD sections
+   - Keep node text under 50 characters
+   - Use simple connections
+
+2. **FLOWCHART-ONLY VERSION**: Clean visual workflow
+   - Start/End: ([text])
+   - Process: [text]
+   - Decision: {{"{{"}}text{{"}}"}}
+   - Input/Output: [/text/]
+   - Maximum visual clarity
 
 PRD CONTENT:
 {prd_text}
 
-Return your response in this EXACT format:
+Return in this EXACT format:
 
 HYBRID:
 ```mermaid
-[your hybrid mermaid code here]
+flowchart TD
+    [your code here]
 ```
 
 FLOWCHART:
 ```mermaid
-[your flowchart-only mermaid code here]
+flowchart TD
+    [your code here]
 ```
 
 GAPS:
-- [List any missing sections, or write "None" if complete]
+- [missing sections or "None"]
 """
         
         print("🤖 Calling Gemini API...")
