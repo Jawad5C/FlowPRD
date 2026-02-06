@@ -41,32 +41,46 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
   // Find node by ID
   const findNode = (id: string) => nodes.find(n => n.id === id);
   
-  // Render arrow between nodes (handles both horizontal and vertical connections)
+  // Render arrow between nodes (smart edge detection for any angle)
   const renderConnection = (conn: Connection) => {
     const fromNode = findNode(conn.from);
     const toNode = findNode(conn.to);
     
     if (!fromNode || !toNode) return null;
     
-    // Determine if connection is horizontal (same column) or vertical (different columns)
-    const isSameColumn = Math.abs(fromNode.x - toNode.x) < 100;
-    const isGoingRight = toNode.x > fromNode.x;
-    const isGoingDown = toNode.y > fromNode.y;
+    // Calculate angle between nodes
+    const dx = toNode.x - fromNode.x;
+    const dy = toNode.y - fromNode.y;
+    const angle = Math.atan2(dy, dx);
     
-    let x1, y1, x2, y2;
+    // Shape dimensions (accounting for label space)
+    const shapeWidth = 320;
+    const shapeHeight = 140; // 120 + 20 for label space
     
-    if (isSameColumn) {
-      // Vertical connection (within same column)
-      x1 = fromNode.x;
-      y1 = fromNode.y + 80; // Bottom of from node
-      x2 = toNode.x;
-      y2 = toNode.y - 80; // Top of to node
+    // Calculate edge points based on angle
+    // For "from" node - find exit point on edge
+    let x1, y1;
+    if (Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle))) {
+      // More horizontal - use left/right edge
+      x1 = fromNode.x + (Math.cos(angle) > 0 ? shapeWidth/2 : -shapeWidth/2);
+      y1 = fromNode.y + (shapeHeight/2) * Math.sin(angle) / Math.abs(Math.cos(angle));
     } else {
-      // Horizontal connection (across columns)
-      x1 = fromNode.x + (isGoingRight ? 180 : -180); // Right or left edge
-      y1 = fromNode.y;
-      x2 = toNode.x - (isGoingRight ? 180 : -180); // Left or right edge
-      y2 = toNode.y;
+      // More vertical - use top/bottom edge
+      x1 = fromNode.x + (shapeWidth/2) * Math.cos(angle) / Math.abs(Math.sin(angle));
+      y1 = fromNode.y + (Math.sin(angle) > 0 ? shapeHeight/2 : -shapeHeight/2);
+    }
+    
+    // For "to" node - find entry point on opposite edge
+    const reverseAngle = angle + Math.PI;
+    let x2, y2;
+    if (Math.abs(Math.cos(reverseAngle)) > Math.abs(Math.sin(reverseAngle))) {
+      // More horizontal - use left/right edge
+      x2 = toNode.x + (Math.cos(reverseAngle) > 0 ? shapeWidth/2 : -shapeWidth/2);
+      y2 = toNode.y + (shapeHeight/2) * Math.sin(reverseAngle) / Math.abs(Math.cos(reverseAngle));
+    } else {
+      // More vertical - use top/bottom edge
+      x2 = toNode.x + (shapeWidth/2) * Math.cos(reverseAngle) / Math.abs(Math.sin(reverseAngle));
+      y2 = toNode.y + (Math.sin(reverseAngle) > 0 ? shapeHeight/2 : -shapeHeight/2);
     }
     
     return (
