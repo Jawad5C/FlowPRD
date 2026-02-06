@@ -51,22 +51,29 @@ INVALID (DO NOT DO):
 - B("Text with (parens)") ❌ (parentheses break it)
 - C{{Decision?}} ❌ (question mark breaks it)
 
-1. **HYBRID VERSION**: Detailed flowchart with RICH text
-   - Use these shapes ONLY:
-     * Start/End: A["text"]  (keep it simple, no fancy shapes)
-     * Process: B["text"]
-     * Decision: C["text"]
+1. **HYBRID VERSION**: Detailed flowchart with RICH text and VARIED shapes
+   - USE THESE EXACT SHAPE FORMATS:
+     * Rectangle: A["text"]
+     * Oval/Stadium: B(["text"])
+     * Diamond: C{{"text"}}
+     * Parallelogram: D[/"text"/]
+     * Cylinder: E[("text")]
    - Include ALL PRD sections (Problem, Solution, Requirements, etc.)
    - Put DETAILED text in nodes:
-     * Short sections: Complete text (remove special chars)
-     * Long sections: 100-200 char summary (remove special chars)
+     * Short sections: Complete text (cleaned)
+     * Long sections: 100-200 char summary (cleaned)
    - Use <br/> for line breaks in long text
-   - CLEAN text of ALL special characters before putting in nodes
+   - Mix different shapes to show different types of information
+   - CLEAN text: remove : ; | inside quotes only
 
-2. **FLOWCHART-ONLY VERSION**: Simple visual workflow
-   - Same syntax rules as Hybrid
-   - Shorter text (10-30 chars per node)
-   - Focus on flow, not details
+2. **FLOWCHART-ONLY VERSION**: Visual workflow with VARIED shapes
+   - USE SHAPE VARIETY:
+     * Start/End: (["text"])
+     * Process steps: ["text"]
+     * Decisions: {{"text"}}
+     * Input/Output: [/"text"/]
+   - Shorter text (20-40 chars per node)
+   - Focus on flow and visual clarity
 
 PRD CONTENT:
 {prd_text}
@@ -171,47 +178,40 @@ def parse_gemini_response(response: str) -> Dict[str, any]:
 def clean_mermaid_syntax(mermaid_code: str) -> str:
     """
     Clean Mermaid code to ensure valid syntax.
-    Removes problematic characters and fixes common issues.
+    Only cleans TEXT content, preserves shape syntax.
     """
     import re
     
-    # Split into lines
     lines = mermaid_code.split('\n')
     cleaned_lines = []
     
     for line in lines:
-        # Skip empty lines
         if not line.strip():
             continue
             
-        # Keep the flowchart declaration as-is
+        # Keep flowchart declaration as-is
         if line.strip().startswith('flowchart'):
             cleaned_lines.append(line)
             continue
         
-        # For node definitions and connections
-        # Remove problematic characters from text inside quotes
-        def clean_quoted_text(match):
+        # Find and clean ONLY the text inside quotes, preserve shape syntax
+        def clean_text_only(match):
             text = match.group(1)
-            # Remove problematic characters
-            text = text.replace('(', '').replace(')', '')
-            text = text.replace('[', '').replace(']', '')
-            text = text.replace('{', '').replace('}', '')
+            # Remove ONLY problematic characters from text content
             text = text.replace(':', ' -')
             text = text.replace(';', ',')
             text = text.replace('|', ' ')
-            text = text.replace('\\', ' ')
-            text = text.replace('<', '').replace('>', '')
-            text = text.replace('"', "'")  # Replace inner quotes with apostrophes
+            text = text.replace('\\', '/')
+            text = text.replace('"', "'")  # Inner quotes to apostrophes
             text = text.replace('`', "'")
             # Clean up multiple spaces
             text = re.sub(r'\s+', ' ', text).strip()
-            return f'["{text}"]'
+            return f'"{text}"'
         
-        # Clean text inside brackets with quotes
-        line = re.sub(r'\["([^"]+)"\]', clean_quoted_text, line)
+        # Only clean text inside quotes, leave shape syntax alone
+        line = re.sub(r'"([^"]*)"', clean_text_only, line)
         
-        # Ensure arrows are clean
+        # Ensure proper arrow spacing
         line = line.replace('-->', ' --> ')
         line = re.sub(r'\s+', ' ', line).strip()
         
