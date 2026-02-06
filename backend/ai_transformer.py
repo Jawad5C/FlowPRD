@@ -98,7 +98,17 @@ MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
     - If missing: "[Dependencies Missing]" + suggest "What could block this project?"
 
 POSITIONING RULES:
-- Start at y=100, then increment by 250px (100, 350, 600, 850, 1100, 1350, 1600, 1850, 2100, 2350)
+- CRITICAL: Use EXACTLY these y-coordinates with NO deviations:
+  * Node 1 (Problem): y=150
+  * Node 2 (Opportunity): y=450
+  * Node 3 (Users): y=750
+  * Node 4 (Solution): y=1050
+  * Node 5 (Requirements): y=1350
+  * Node 6 (Tech Stack): y=1650
+  * Node 7 (Metrics): y=1950
+  * Node 8 (Out of Scope): y=2250
+  * Node 9 (Timeline): y=2550
+  * Node 10 (Dependencies): y=2850
 - All nodes centered at x=400
 - Connect each node to the next (A→B→C→D→E→F→G→H→I→J)
 

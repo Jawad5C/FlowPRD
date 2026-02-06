@@ -29,11 +29,11 @@ interface DiagramRendererProps {
 const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
   const { nodes, connections } = data;
   
-  // Calculate SVG dimensions based on node positions
-  const maxX = Math.max(...nodes.map(n => n.x)) + 300;
-  const maxY = Math.max(...nodes.map(n => n.y)) + 200;
-  const minX = Math.min(...nodes.map(n => n.x)) - 300;
-  const minY = Math.min(...nodes.map(n => n.y)) - 200;
+  // Calculate SVG dimensions based on node positions with extra padding
+  const maxX = Math.max(...nodes.map(n => n.x)) + 400;
+  const maxY = Math.max(...nodes.map(n => n.y)) + 300;
+  const minX = Math.min(...nodes.map(n => n.x)) - 400;
+  const minY = Math.min(...nodes.map(n => n.y)) - 300;
   
   const width = maxX - minX;
   const height = maxY - minY;
@@ -48,10 +48,14 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
     
     if (!fromNode || !toNode) return null;
     
+    // Adjust offsets based on shape type (diamonds are taller)
+    const fromOffset = fromNode.shape === 'diamond' ? 100 : 70;
+    const toOffset = toNode.shape === 'diamond' ? 100 : 70;
+    
     const x1 = fromNode.x;
-    const y1 = fromNode.y + 60; // Bottom of from node (more space for tall shapes)
+    const y1 = fromNode.y + fromOffset; // Bottom of from node
     const x2 = toNode.x;
-    const y2 = toNode.y - 60; // Top of to node (more space for tall shapes)
+    const y2 = toNode.y - toOffset; // Top of to node
     
     return (
       <g key={`${conn.from}-${conn.to}`}>
@@ -95,9 +99,10 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
   return (
     <svg
       width="100%"
-      height={height + 100}
+      height="auto"
       viewBox={`${minX} ${minY} ${width} ${height}`}
-      style={{ background: '#0F172A', borderRadius: '8px' }}
+      preserveAspectRatio="xMidYMid meet"
+      style={{ background: '#0F172A', borderRadius: '8px', maxHeight: '80vh' }}
     >
       {/* Render connections first (behind nodes) */}
       {connections.map(renderConnection)}
