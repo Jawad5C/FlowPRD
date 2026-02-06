@@ -45,10 +45,14 @@ flowchart TD
     B --> C["Design Solution"]
     C --> D["Implement"]
 
-1. **HYBRID VERSION**: Detailed flowchart with rich descriptions
+1. **HYBRID VERSION**: Detailed flowchart with RICH text inside nodes
    - Use flowchart shapes: ([Oval]), [Rectangle], {{"{{"}}Diamond{{"}}"}}, [/Parallelogram/]
-   - Include key PRD sections
-   - Keep node text under 50 characters
+   - Include ALL key PRD sections (Problem, Solution, Users, Requirements, etc.)
+   - IMPORTANT: Put substantial text IN the nodes:
+     * If section text is short (1-3 sentences): Include COMPLETE text in node
+     * If section text is long: Include PARAGRAPH SUMMARY (3-5 sentences) in node
+     * Aim for 100-200 characters per node for detailed context
+   - Use line breaks (br tag) to format long text
    - Use simple connections
 
 2. **FLOWCHART-ONLY VERSION**: Clean visual workflow
