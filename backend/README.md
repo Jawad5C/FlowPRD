@@ -44,7 +44,7 @@ Health check endpoint.
 ```
 
 ### `POST /api/transform`
-Transform PRD file or text into Mermaid diagrams.
+Transform PRD file or text into structured visual diagram data.
 
 **Request (File Upload):**
 - Content-Type: `multipart/form-data`
@@ -58,9 +58,14 @@ Transform PRD file or text into Mermaid diagrams.
 ```json
 {
   "success": true,
-  "hybrid": "graph TB\n...",
-  "flowchart": "graph TB\n...",
-  "gaps_detected": ["Missing Success Metrics", "Missing Out of Scope"],
+  "nodes": [
+    {"id": "A", "shape": "rounded_box", "text": "Problem: ...", "fullText": "...", "x": 400, "y": 100, "color": "#3B82F6"},
+    {"id": "B", "shape": "stadium", "text": "Users: ...", "fullText": "...", "x": 400, "y": 350, "color": "#10B981"}
+  ],
+  "connections": [
+    {"from": "A", "to": "B", "label": ""}
+  ],
+  "gaps_detected": ["Opportunity", "Timeline/Phases"],
   "input_length": 5000
 }
 ```
@@ -77,18 +82,18 @@ Max file size: 5MB (configurable in .env)
 
 ## AI Processing
 
-Uses **Gemini 1.5 Pro** (Google - FREE) to:
-1. Parse PRD content
-2. Extract structure
-3. Generate Hybrid Mermaid diagram (visual + text)
-4. Generate Flowchart-only diagram (pure visual)
-5. Detect missing sections
+Uses **Gemini 2.5 Flash** (Google - FREE) to:
+1. Parse PRD content into 10 standard sections
+2. Extract structure and detect gaps
+3. Generate JSON with nodes (text + fullText for tooltips)
+4. Create connections between sections
+5. Provide AI suggestions for missing sections
 
 **Why Gemini?**
 - ✅ FREE (60 requests/minute)
 - ✅ 1M token context window
 - ✅ No credit card required
-- ✅ High-quality diagram generation
+- ✅ High-quality structured output (JSON)
 
 ## Testing
 

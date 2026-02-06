@@ -159,7 +159,7 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 **Backend (Python Flask):**
 ```
 /api/upload      → Accept file uploads
-/api/transform   → Send to Claude, return Mermaid
+/api/transform   → Send to Gemini, return diagram JSON
 /api/status      → Check processing status
 ```
 

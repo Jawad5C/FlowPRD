@@ -6,12 +6,13 @@ React + TypeScript frontend for FlowPRD AI-powered PRD transformer.
 
 - 📤 Drag & drop file upload
 - ✍️ Direct text paste
-- 🤖 AI transformation via Claude
-- 📊 Side-by-side diagram view
-- 🔄 Toggle between Hybrid and Flowchart-only
-- 📋 Copy to clipboard
-- 💾 Download as Markdown
-- ⚠️ Gap detection alerts
+- 🤖 AI transformation via Gemini
+- 📊 Visual diagram with custom SVG shapes
+- 🖱️ Hover tooltips showing full section text
+- 📋 Copy diagram as JSON
+- 💾 Download as JSON file
+- ⚠️ Gap detection with AI suggestions
+- ✅ Always shows all 10 standard PRD sections
 
 ## Setup
 
@@ -33,27 +34,27 @@ Frontend runs on: http://localhost:3000
    - 📄 Upload File (.docx, .pdf, .txt, .md)
    - ✍️ Paste Text directly
 
-2. Click "Transform to Mermaid"
+2. Click "Transform to Visual Diagram"
 
 3. View results:
-   - ⚡ Side-by-Side (both versions)
-   - 📊 Hybrid Only (diagram + text)
-   - 🔄 Flowchart Only (pure visual)
+   - 📊 Single flowchart with all 10 PRD sections
+   - 🖱️ Hover over any shape to see full text
+   - ⚠️ Missing sections shown with AI suggestions
 
 4. Export:
-   - 📋 Copy to clipboard
-   - 💾 Download as .md file
+   - 📋 Copy diagram data as JSON
+   - 💾 Download as .json file
 
 ## Tech Stack
 
 - React 19
 - TypeScript
 - Vite (dev server)
-- Mermaid.js (diagram rendering)
+- Custom SVG shape rendering (7 shape types)
 
 ## API Connection
 
-Frontend proxies API calls to Flask backend at `http://localhost:5000`:
-- `POST /api/transform` - Transform PRD
+Frontend proxies API calls to Flask backend at `http://localhost:5001`:
+- `POST /api/transform` - Transform PRD to visual diagram data
 
 Make sure backend is running before starting frontend!
