@@ -198,7 +198,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onTransform, isProcessing, erro
           boxShadow: isProcessing ? 'none' : '0 4px 20px rgba(102, 126, 234, 0.4)'
         }}
       >
-        {isProcessing ? '🤖 Transforming with AI...' : '✨ Transform to Mermaid'}
+        {isProcessing ? '🤖 Transforming with AI...' : '✨ Transform to Visual Diagram'}
       </button>
 
       <p style={{
@@ -207,7 +207,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onTransform, isProcessing, erro
         color: '#64748b',
         fontSize: '0.85em'
       }}>
-        Powered by Claude AI • Supports .docx, .pdf, .txt, .md
+        Powered by Gemini AI • Supports .docx, .pdf, .txt, .md
       </p>
     </div>
   );

@@ -57,43 +57,44 @@ Enable product teams to transform any idea or existing PRD into a visual flowcha
 
 ## Proposed Solution
 
-An **AI-powered web application** that transforms any existing PRD (text, Word, PDF, fragmented notes) into a visual, scannable Mermaid flowchart that both humans and AI coding assistants can instantly understand.
+An **AI-powered web application** that transforms any existing PRD (text, Word, PDF, fragmented notes) into a visual, scannable flowchart using custom SVG shapes that both humans and AI coding assistants can instantly understand.
 
 ### **How It Works:**
 
 **User Flow:**
 1. **Upload/Paste:** User uploads PRD file (.docx, .pdf, .txt, .md) or pastes text directly
-2. **AI Analysis:** Claude AI extracts and restructures content using standardized flowchart semantics
-3. **Transform:** System generates two versions simultaneously:
-   - **Hybrid:** Mermaid diagram + detailed text descriptions
-   - **Flowchart-only:** Pure visual flowchart (100% UML/flowchart compliant)
-4. **Display:** Side-by-side view with toggle between formats
-5. **Export:** User downloads/copies result (no storage, stateless)
+2. **AI Analysis:** Gemini AI extracts and restructures content into 10 standard PRD sections
+3. **Transform:** System generates visual diagram with custom SVG shapes (stadiums, rectangles, diamonds, hexagons, etc.)
+4. **Display:** Single flowchart showing ALL sections (including missing ones with AI suggestions)
+5. **Hover:** Hover over any shape to see full section text in tooltip
+6. **Export:** User downloads/copies result as JSON (no storage, stateless)
 
 **Intelligent Gap Detection:**
-- **Primary:** AI restructures existing content (Option A)
-- **Secondary:** If PRD is missing sections, AI suggests what's missing (Option B)
-- User decides whether to fill gaps or proceed with current content
+- AI always shows ALL 10 standard PRD sections
+- Missing sections display with placeholder: "[Section Missing]"
+- AI provides contextual suggestions for each missing section
+- Educational tool for learning complete PRD structure
 
 ### **Technical Architecture:**
 
 **Frontend:**
-- React/HTML with drag & drop file upload
-- Side-by-side display with format toggle
-- Real-time preview of Mermaid diagrams
-- Download/copy functionality
+- React with TypeScript
+- Custom SVG shape rendering (7 shape types)
+- Hover tooltips for full section text
+- Drag & drop file upload
+- Download/copy JSON functionality
 
 **Backend:**
 - Python Flask API
 - File parsing libraries (python-docx, PyPDF2, markdown)
-- Claude API integration (Anthropic)
+- Gemini API integration (Google)
 - No database required (stateless transformations)
 
 **AI Processing:**
-- Claude Sonnet 4.5 for structured output
-- Follows UML/flowchart conventions (ovals, diamonds, rectangles, parallelograms)
-- Generates both Hybrid and Flowchart-only versions
-- 7-section framework: Problem, Opportunity, Users, Solution, Requirements, Metrics, Scope
+- Google Gemini 2.5 Flash for structured JSON output
+- Follows UML/flowchart conventions (ovals, diamonds, rectangles, parallelograms, hexagons, cylinders)
+- Always generates 10 standard sections (shows "[Missing]" placeholders)
+- 10-section framework: Problem, Opportunity, Users, Solution, Requirements, Tech Stack, Metrics, Out of Scope, Timeline, Dependencies
 
 ### **Deployment:**
 
@@ -101,9 +102,10 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 **v2.0 (Scale):** Vercel deployment with serverless functions
 
 **Competitive Advantage:**
-- **vs. Confluence:** AI transforms text walls into visual diagrams, free, AI-parseable output
-- **vs. Notion:** Automated conversion (not manual), standardized flowchart format
-- **vs. Productboard AI:** Generates visual flowcharts (not text), accepts any input format, 100% free
+- **vs. Confluence:** AI transforms text walls into visual diagrams, free, AI-parseable output, custom shapes (not limited to Mermaid syntax)
+- **vs. Notion:** Automated conversion (not manual), standardized flowchart format, educational gap detection
+- **vs. Productboard AI:** Generates visual flowcharts (not text), accepts any input format, 100% free, always shows complete PRD structure
+- **vs. Mermaid.js tools:** Direct SVG rendering (no syntax errors), hover tooltips, guaranteed 10-section coverage
 
 ---
 
@@ -114,19 +116,21 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 | Feature ID | Feature Name | Description | Priority |
 |------------|--------------|-------------|----------|
 | FR-01 | Multi-Format File Upload | Accept .docx, .pdf, .txt, .md files and direct text paste | P0 |
-| FR-02 | AI-Powered Parsing | Claude API extracts and restructures PRD content | P0 |
-| FR-03 | Dual Output Generation | Generate both Hybrid and Flowchart-only Mermaid versions | P0 |
-| FR-04 | Side-by-Side Display | Show both formats simultaneously with toggle capability | P0 |
-| FR-05 | Gap Detection | AI identifies missing PRD sections and suggests additions | P0 |
-| FR-06 | Export Functionality | Download/copy results in Markdown format | P0 |
-| FR-07 | Drag & Drop UI | Intuitive file upload interface | P0 |
+| FR-02 | AI-Powered Parsing | Gemini API extracts and restructures PRD into 10 sections | P0 |
+| FR-03 | Custom SVG Diagram | Generate visual flowchart with 7 custom shape types | P0 |
+| FR-04 | Hover Tooltips | Show full section text on hover over any shape | P0 |
+| FR-05 | Complete Coverage | Always show all 10 PRD sections (with "[Missing]" placeholders) | P0 |
+| FR-06 | Gap Detection & Suggestions | AI identifies missing sections and provides contextual hints | P0 |
+| FR-07 | Export Functionality | Download/copy results in JSON format | P0 |
+| FR-08 | Drag & Drop UI | Intuitive file upload interface | P0 |
 
 **Should-Have (P1):**
 - Real-time preview as AI processes
 - Example PRD samples (Anchore, FlowPRD itself)
-- Customizable color schemes for diagrams
+- Customizable color schemes for shapes
 - Processing status indicators
 - Error handling for malformed PRDs
+- Print-friendly view (tooltips visible)
 
 **Nice-to-Have (P2):**
 - User accounts (save API preferences)
@@ -145,12 +149,12 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 
 ## Technical Implementation
 
-**Frontend (React/HTML):**
+**Frontend (React/TypeScript):**
 - React components for UI
-- Mermaid.js for diagram rendering
+- Custom SVG shape rendering (Stadium, Rectangle, Rounded Box, Parallelogram, Diamond, Hexagon, Cylinder)
 - Drag & drop file upload (React-Dropzone)
-- Toggle component for Hybrid/Flowchart view
-- Copy-to-clipboard functionality
+- Hover tooltip component with text wrapping
+- Copy-to-clipboard and JSON download functionality
 
 **Backend (Python Flask):**
 ```
@@ -166,10 +170,10 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 - Plain text parser for .txt
 
 **AI Integration:**
-- Anthropic Claude API (Sonnet 4.5)
-- Structured prompt for PRD transformation
+- Google Gemini API (2.5 Flash - FREE!)
+- Structured prompt for 10-section PRD transformation
 - Follows UML/flowchart shape conventions
-- Returns both Hybrid and Flowchart versions
+- Returns JSON with nodes (text + fullText), connections, and gaps array
 
 **Storage:**
 - No database required (stateless)
@@ -178,7 +182,8 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 
 **Constraints:**
 - Maximum file size: 5MB (PRD documents)
-- Maximum template complexity: 50 nodes for readability
+- Maximum nodes: 10 (one per standard section)
+- Custom SVG rendering (not dependent on third-party diagram libraries)
 - Compatible with all major AI coding assistants (Cursor, Copilot, Claude, ChatGPT)
 - Zero subscription costs (API costs only)
 
@@ -198,8 +203,9 @@ An **AI-powered web application** that transforms any existing PRD (text, Word, 
 
 **Quality:**
 - Support for 4 file formats (.docx, .pdf, .txt, .md)
-- 0 ambiguous sections when reviewed by 3rd party developer
-- Both Hybrid and Flowchart versions generated successfully 95%+ of time
+- 10 sections always displayed (100% coverage)
+- SVG diagrams render successfully 95%+ of time (no syntax errors)
+- Hover tooltips work on all shapes
 
 **Cost Savings:**
 - Users save $60-720/year vs. Confluence/Productboard subscriptions
@@ -263,9 +269,10 @@ cd frontend && npm run dev
 ### Usage
 1. **Open** `http://localhost:3000` in your browser
 2. **Upload** your PRD (.docx, .pdf, .txt, .md) or paste text
-3. **Transform** with AI (Gemini 1.5 Pro - FREE!)
-4. **View** Hybrid (detailed) and Flowchart (90%+ UML) versions
-5. **Export** via copy-to-clipboard or download as Markdown
+3. **Transform** with AI (Gemini 2.5 Flash - FREE!)
+4. **View** visual diagram with all 10 PRD sections
+5. **Hover** over any shape to see full section text
+6. **Export** via copy-to-clipboard or download as JSON
 
 **Test Files:** Try this README.md as your first transformation!
 
@@ -275,9 +282,9 @@ cd frontend && npm run dev
 
 ## Tech Stack
 
-**Frontend:** React, Mermaid.js, React-Dropzone  
+**Frontend:** React, TypeScript, Custom SVG Shapes  
 **Backend:** Python Flask, Gemini API  
-**AI:** Google Gemini 1.5 Pro (FREE - 1M tokens!)  
+**AI:** Google Gemini 2.5 Flash (FREE - 1M tokens!)  
 **File Processing:** python-docx, PyPDF2, markdown  
 **Deployment:** Localhost (v1), Vercel (v2)
 
@@ -302,12 +309,12 @@ Contributions welcome! This project is in active development.
 ## Roadmap
 
 - [x] PRD Documentation
-- [ ] Backend API (Flask)
-- [ ] Frontend UI (React)
-- [ ] Claude API Integration
-- [ ] File Upload & Parsing
-- [ ] Dual Output Generation
-- [ ] Side-by-Side Display
-- [ ] Gap Detection Feature
+- [x] Backend API (Flask)
+- [x] Frontend UI (React + TypeScript)
+- [x] Gemini API Integration
+- [x] File Upload & Parsing
+- [x] Custom SVG Shape Rendering
+- [x] 10-Section Coverage with Gap Detection
+- [x] Hover Tooltip Feature
 - [ ] Demo Testing (Anchore + FlowPRD samples)
 - [ ] Vercel Deployment (v2.0)

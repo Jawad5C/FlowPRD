@@ -9,10 +9,3 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.mermaid {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  margin: 10px 0;
-}

@@ -1,6 +1,6 @@
 """
 AI Transformer Module
-Uses Google Gemini API to transform PRD text into Mermaid diagrams
+Uses Google Gemini API to transform PRD text into structured diagram data
 """
 
 from typing import Optional, Dict
@@ -8,15 +8,15 @@ import os
 import google.generativeai as genai
 
 
-def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
+def transform_to_diagram(prd_text: str) -> Optional[Dict[str, str]]:
     """
-    Transform PRD text into Mermaid diagrams using Gemini AI.
+    Transform PRD text into structured diagram data using Gemini AI.
     
     Args:
         prd_text: The PRD content as text
         
     Returns:
-        Dictionary with 'hybrid' and 'flowchart' Mermaid code, or None if failed
+        Dictionary with nodes, connections, and gaps, or None if failed
     """
     api_key = os.getenv('GEMINI_API_KEY')
     
@@ -216,9 +216,9 @@ def parse_gemini_response(response: str) -> Dict[str, any]:
 
 
 if __name__ == '__main__':
-    # Test the parser
+    # Test the transformer
     test_text = "This is a test PRD for a blockchain notary application."
-    result = transform_to_mermaid(test_text)
+    result = transform_to_diagram(test_text)
     if result:
         print("\n✅ Test successful!")
         print(f"Nodes: {len(result['nodes'])}")
