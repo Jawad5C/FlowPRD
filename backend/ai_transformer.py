@@ -198,15 +198,29 @@ def clean_mermaid_syntax(mermaid_code: str) -> str:
         # Find and clean ONLY the text inside quotes, preserve shape syntax
         def clean_text_only(match):
             text = match.group(1)
-            # Remove ONLY problematic characters from text content
+            # Remove problematic characters that break Mermaid
             text = text.replace(':', ' -')
             text = text.replace(';', ',')
             text = text.replace('|', ' ')
             text = text.replace('\\', '/')
             text = text.replace('"', "'")  # Inner quotes to apostrophes
             text = text.replace('`', "'")
+            text = text.replace('#', 'num')  # Hash can cause issues
+            text = text.replace('$', '')     # Dollar sign issues
+            text = text.replace('%', ' percent')
+            text = text.replace('&', ' and ')
+            text = text.replace('*', '')
+            text = text.replace('+', ' plus ')
+            text = text.replace('=', ' equals ')
+            text = text.replace('~', '')
+            text = text.replace('^', '')
+            # Clean up HTML-like tags that might break
+            text = re.sub(r'<(?!br\/>)', ' ', text)
+            text = re.sub(r'(?<!<br)>', ' ', text)
             # Clean up multiple spaces
             text = re.sub(r'\s+', ' ', text).strip()
+            # Escape any remaining problematic characters
+            text = text.replace('[', '').replace(']', '')
             return f'"{text}"'
         
         # Only clean text inside quotes, leave shape syntax alone
