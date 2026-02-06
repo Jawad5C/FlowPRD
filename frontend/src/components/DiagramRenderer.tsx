@@ -48,25 +48,25 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
     
     if (!fromNode || !toNode) return null;
     
-    // Determine if connection is horizontal (same row) or vertical (different rows)
-    const isHorizontal = Math.abs(fromNode.y - toNode.y) < 100;
+    // Determine if connection is horizontal (same column) or vertical (different columns)
+    const isSameColumn = Math.abs(fromNode.x - toNode.x) < 100;
     const isGoingRight = toNode.x > fromNode.x;
     const isGoingDown = toNode.y > fromNode.y;
     
     let x1, y1, x2, y2;
     
-    if (isHorizontal) {
-      // Horizontal connection (same row)
-      x1 = fromNode.x + (isGoingRight ? 180 : -180); // Right or left edge
-      y1 = fromNode.y;
-      x2 = toNode.x - (isGoingRight ? 180 : -180); // Left or right edge
-      y2 = toNode.y;
-    } else {
-      // Vertical connection (different rows)
+    if (isSameColumn) {
+      // Vertical connection (within same column)
       x1 = fromNode.x;
       y1 = fromNode.y + 80; // Bottom of from node
       x2 = toNode.x;
       y2 = toNode.y - 80; // Top of to node
+    } else {
+      // Horizontal connection (across columns)
+      x1 = fromNode.x + (isGoingRight ? 180 : -180); // Right or left edge
+      y1 = fromNode.y;
+      x2 = toNode.x - (isGoingRight ? 180 : -180); // Left or right edge
+      y2 = toNode.y;
     }
     
     return (

@@ -97,27 +97,27 @@ MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
     - Full text: External dependencies, risks, blockers
     - If missing: "[Dependencies Missing]" + suggest "What could block this project?"
 
-POSITIONING RULES - 3-ROW LATERAL LAYOUT:
+POSITIONING RULES - 3-COLUMN VERTICAL LAYOUT:
 - CRITICAL: Use EXACTLY these coordinates with NO deviations:
   
-  ROW 1 (Top, y=150):
-  * Node 1 (Problem): x=250, y=150
-  * Node 2 (Opportunity): x=600, y=150
-  * Node 3 (Users): x=950, y=150
-  * Node 4 (Solution): x=1300, y=150
+  COLUMN 1 (Left, x=300):
+  * Node 1 (Problem): x=300, y=200
+  * Node 2 (Opportunity): x=300, y=550
+  * Node 3 (Users): x=300, y=900
+  * Node 4 (Solution): x=300, y=1250
   
-  ROW 2 (Middle, y=550):
-  * Node 5 (Requirements): x=250, y=550
-  * Node 6 (Tech Stack): x=600, y=550
-  * Node 7 (Metrics): x=950, y=550
-  * Node 8 (Out of Scope): x=1300, y=550
+  COLUMN 2 (Middle, x=750):
+  * Node 5 (Requirements): x=750, y=200
+  * Node 6 (Tech Stack): x=750, y=550
+  * Node 7 (Metrics): x=750, y=900
+  * Node 8 (Out of Scope): x=750, y=1250
   
-  ROW 3 (Bottom, y=950):
-  * Node 9 (Timeline): x=600, y=950
-  * Node 10 (Dependencies): x=950, y=950
+  COLUMN 3 (Right, x=1200):
+  * Node 9 (Timeline): x=1200, y=450
+  * Node 10 (Dependencies): x=1200, y=800
 
-- Connect nodes in reading order (left-to-right, top-to-bottom):
-  A→B→C→D (Row 1), D→E (down to Row 2), E→F→G→H (Row 2), H→I (down to Row 3), I→J (Row 3)
+- Connect nodes in logical flow:
+  A→B→C→D (Column 1 vertical), D→E (across to Column 2), E→F→G→H (Column 2 vertical), H→I (across to Column 3), I→J (Column 3 vertical)
 
 CONTENT EXTRACTION RULES:
 - If section EXISTS: Extract actual content
