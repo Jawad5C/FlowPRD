@@ -97,27 +97,31 @@ MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
     - Full text: External dependencies, risks, blockers
     - If missing: "[Dependencies Missing]" + suggest "What could block this project?"
 
-POSITIONING RULES - 3-COLUMN VERTICAL LAYOUT:
+POSITIONING RULES - ORGANIC SPATIAL LAYOUT:
 - CRITICAL: Use EXACTLY these coordinates with NO deviations:
   
-  COLUMN 1 (Left, x=300):
+  TOP-LEFT CLUSTER (Problem/Opportunity):
   * Node 1 (Problem): x=300, y=200
-  * Node 2 (Opportunity): x=300, y=550
-  * Node 3 (Users): x=300, y=900
-  * Node 4 (Solution): x=300, y=1250
+  * Node 2 (Opportunity): x=300, y=500
   
-  COLUMN 2 (Middle, x=750):
-  * Node 5 (Requirements): x=750, y=200
-  * Node 6 (Tech Stack): x=750, y=550
-  * Node 7 (Metrics): x=750, y=900
-  * Node 8 (Out of Scope): x=750, y=1250
+  TOP-RIGHT CLUSTER (Users/Solution):
+  * Node 3 (Users): x=950, y=200
+  * Node 4 (Solution): x=950, y=500
   
-  COLUMN 3 (Right, x=1200):
-  * Node 9 (Timeline): x=1200, y=450
-  * Node 10 (Dependencies): x=1200, y=800
+  MIDDLE-LEFT CLUSTER (Requirements/Tech):
+  * Node 5 (Requirements): x=280, y=850
+  * Node 6 (Tech Stack): x=650, y=850
+  
+  MIDDLE-RIGHT CLUSTER (Metrics/Scope):
+  * Node 7 (Metrics): x=1000, y=850
+  * Node 8 (Out of Scope): x=1350, y=850
+  
+  BOTTOM CLUSTER (Timeline/Dependencies):
+  * Node 9 (Timeline): x=500, y=1200
+  * Node 10 (Dependencies): x=950, y=1200
 
-- Connect nodes in logical flow:
-  A→B→C→D (Column 1 vertical), D→E (across to Column 2), E→F→G→H (Column 2 vertical), H→I (across to Column 3), I→J (Column 3 vertical)
+- Connect nodes in logical reading flow:
+  A→B (down), B→C (diagonal right-up), C→D (down), D→E (diagonal left-down), E→F (right), F→G (right), G→H (right), H→I (diagonal left-down), I→J (right)
 
 CONTENT EXTRACTION RULES:
 - If section EXISTS: Extract actual content
