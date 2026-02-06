@@ -87,7 +87,7 @@ const App: React.FC = () => {
       }
     } catch (err) {
       console.error('Transform error:', err);
-      setError('Failed to connect to backend. Make sure Flask is running on port 5000.');
+      setError('Failed to connect to backend. Make sure Flask is running on port 5001.');
     } finally {
       setIsProcessing(false);
     }

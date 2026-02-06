@@ -118,7 +118,7 @@ if __name__ == '__main__':
     print("\n" + "="*60)
     print("🚀 FlowPRD Backend Starting...")
     print("="*60)
-    print(f"\n🌐 API running on: http://localhost:5000")
+    print(f"\n🌐 API running on: http://localhost:5001")
     print(f"📁 Upload folder: {UPLOAD_FOLDER.absolute()}")
     print(f"📊 Max file size: {MAX_FILE_SIZE // (1024*1024)}MB")
     print(f"✅ Allowed formats: {', '.join(ALLOWED_EXTENSIONS)}")
