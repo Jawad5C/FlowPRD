@@ -11,15 +11,15 @@ interface ShapeProps {
   height?: number;
 }
 
-// Shape type labels for display
+// Shape type labels for display (UML-aligned)
 const shapeLabels: { [key: string]: string } = {
-  stadium: "START/END/USERS",
-  rectangle: "FEATURES/ACTIONS",
-  rounded_box: "PROBLEM/SOLUTION",
-  parallelogram: "REQUIREMENTS",
-  diamond: "DECISIONS/QUESTIONS",
-  hexagon: "CONSTRAINTS/RULES",
-  cylinder: "DATABASES/STORAGE"
+  stadium: "START/END",
+  rectangle: "ACTIVITY",
+  rounded_box: "DESCRIPTION",
+  parallelogram: "INPUT/OUTPUT",
+  diamond: "DECISION",
+  hexagon: "CONSTRAINT",
+  cylinder: "DATA/RESOURCES"
 };
 
 // Helper function to wrap text to fit within width
