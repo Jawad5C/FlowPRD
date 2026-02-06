@@ -1,10 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import mermaid from 'mermaid';
+import React, { useState } from 'react';
+import DiagramRenderer from './DiagramRenderer';
+
+interface Node {
+  id: string;
+  shape: string;
+  text: string;
+  x: number;
+  y: number;
+  color: string;
+}
+
+interface Connection {
+  from: string;
+  to: string;
+  label?: string;
+}
+
+interface DiagramData {
+  nodes: Node[];
+  connections: Connection[];
+}
 
 interface ResultsDisplayProps {
   result: {
-    hybrid: string;
-    flowchart: string;
+    hybrid: DiagramData;
+    flowchart: DiagramData;
     gaps: string[];
     inputLength: number;
   };
@@ -14,27 +34,8 @@ interface ResultsDisplayProps {
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset }) => {
   const [viewMode, setViewMode] = useState<'side-by-side' | 'hybrid' | 'flowchart'>('side-by-side');
 
-  // Initialize Mermaid
-  useEffect(() => {
-    mermaid.initialize({ 
-      startOnLoad: true,
-      theme: 'default',
-      securityLevel: 'loose'
-    });
-    
-    // Render diagrams after a short delay to ensure DOM is ready
-    setTimeout(() => {
-      mermaid.run();
-    }, 100);
-  }, [result]);
-
-  const copyToClipboard = (text: string, type: string) => {
-    navigator.clipboard.writeText(text);
-    alert(`${type} copied to clipboard!`);
-  };
-
-  const downloadMarkdown = (content: string, filename: string) => {
-    const blob = new Blob([content], { type: 'text/markdown' });
+  const downloadJSON = (data: DiagramData, filename: string) => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -43,152 +44,144 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset }) => {
     URL.revokeObjectURL(url);
   };
 
+  const copyJSON = (data: DiagramData, type: string) => {
+    navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+    alert(`${type} JSON copied to clipboard!`);
+  };
+
   return (
     <div>
       {/* Control Bar */}
       <div style={{
         background: 'white',
-        borderRadius: '16px',
+        borderRadius: '8px',
         padding: '20px',
         marginBottom: '20px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
-        gap: '15px'
+        gap: '10px'
       }}>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button
             onClick={() => setViewMode('side-by-side')}
             style={{
               padding: '10px 20px',
-              border: 'none',
-              borderRadius: '10px',
-              background: viewMode === 'side-by-side' ? '#667eea' : '#e2e8f0',
-              color: viewMode === 'side-by-side' ? 'white' : '#64748b',
-              fontWeight: '600',
-              cursor: 'pointer'
+              border: viewMode === 'side-by-side' ? '2px solid #3B82F6' : '2px solid #E5E7EB',
+              background: viewMode === 'side-by-side' ? '#EFF6FF' : 'white',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: '500'
             }}
           >
-            ⚡ Side-by-Side
+            Side-by-Side
           </button>
           <button
             onClick={() => setViewMode('hybrid')}
             style={{
               padding: '10px 20px',
-              border: 'none',
-              borderRadius: '10px',
-              background: viewMode === 'hybrid' ? '#667eea' : '#e2e8f0',
-              color: viewMode === 'hybrid' ? 'white' : '#64748b',
-              fontWeight: '600',
-              cursor: 'pointer'
+              border: viewMode === 'hybrid' ? '2px solid #3B82F6' : '2px solid #E5E7EB',
+              background: viewMode === 'hybrid' ? '#EFF6FF' : 'white',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: '500'
             }}
           >
-            📊 Hybrid Only
+            Hybrid Only
           </button>
           <button
             onClick={() => setViewMode('flowchart')}
             style={{
               padding: '10px 20px',
-              border: 'none',
-              borderRadius: '10px',
-              background: viewMode === 'flowchart' ? '#667eea' : '#e2e8f0',
-              color: viewMode === 'flowchart' ? 'white' : '#64748b',
-              fontWeight: '600',
-              cursor: 'pointer'
+              border: viewMode === 'flowchart' ? '2px solid #3B82F6' : '2px solid #E5E7EB',
+              background: viewMode === 'flowchart' ? '#EFF6FF' : 'white',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: '500'
             }}
           >
-            🔄 Flowchart Only
+            Flowchart Only
           </button>
         </div>
-
+        
         <button
           onClick={onReset}
           style={{
-            padding: '10px 25px',
-            border: 'none',
-            borderRadius: '10px',
-            background: '#ef4444',
-            color: 'white',
-            fontWeight: '600',
-            cursor: 'pointer'
+            padding: '10px 20px',
+            border: '2px solid #EF4444',
+            background: 'white',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            color: '#EF4444',
+            fontWeight: '500'
           }}
         >
-          🔄 New PRD
+          ↻ Transform Another PRD
         </button>
       </div>
 
-      {/* Gaps Detection */}
+      {/* Gaps Alert */}
       {result.gaps.length > 0 && (
         <div style={{
-          background: '#fef3c7',
-          border: '2px solid #fbbf24',
-          borderRadius: '16px',
+          background: '#FEF3C7',
+          border: '2px solid #F59E0B',
+          borderRadius: '8px',
           padding: '20px',
           marginBottom: '20px'
         }}>
-          <h3 style={{ 
-            fontSize: '1.2em', 
-            marginBottom: '10px',
-            color: '#92400e',
-            fontWeight: '700'
-          }}>
+          <h3 style={{ margin: '0 0 10px 0', color: '#92400E' }}>
             ⚠️ Missing Sections Detected
           </h3>
-          <ul style={{ 
-            marginLeft: '20px',
-            color: '#78350f'
-          }}>
+          <ul style={{ margin: 0, paddingLeft: '20px', color: '#92400E' }}>
             {result.gaps.map((gap, index) => (
-              <li key={index} style={{ marginBottom: '5px' }}>{gap}</li>
+              <li key={index}>{gap}</li>
             ))}
           </ul>
-          <p style={{ 
-            marginTop: '10px',
-            fontSize: '0.9em',
-            color: '#78350f',
-            fontStyle: 'italic'
-          }}>
-            💡 Consider adding these sections for a complete PRD
-          </p>
         </div>
       )}
 
-      {/* Results Display */}
+      {/* Diagrams */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: viewMode === 'side-by-side' ? '1fr 1fr' : '1fr',
         gap: '20px'
       }}>
+        {/* Hybrid Diagram */}
         {(viewMode === 'side-by-side' || viewMode === 'hybrid') && (
           <DiagramCard
             title="📊 Hybrid Version"
-            subtitle="Visual + Detailed Text"
-            mermaidCode={result.hybrid}
-            onCopy={() => copyToClipboard('```mermaid\n' + result.hybrid + '\n```', 'Hybrid diagram')}
-            onDownload={() => downloadMarkdown('```mermaid\n' + result.hybrid + '\n```', 'flowprd-hybrid.md')}
+            subtitle="Detailed PRD with Rich Text"
+            data={result.hybrid}
+            onCopy={() => copyJSON(result.hybrid, 'Hybrid')}
+            onDownload={() => downloadJSON(result.hybrid, 'hybrid-diagram.json')}
           />
         )}
-
+        
+        {/* Flowchart Diagram */}
         {(viewMode === 'side-by-side' || viewMode === 'flowchart') && (
           <DiagramCard
             title="🔄 Flowchart Version"
-            subtitle="Pure Visual (90%+ UML Compliant)"
-            mermaidCode={result.flowchart}
-            onCopy={() => copyToClipboard('```mermaid\n' + result.flowchart + '\n```', 'Flowchart diagram')}
-            onDownload={() => downloadMarkdown('```mermaid\n' + result.flowchart + '\n```', 'flowprd-flowchart.md')}
+            subtitle="Simplified Workflow"
+            data={result.flowchart}
+            onCopy={() => copyJSON(result.flowchart, 'Flowchart')}
+            onDownload={() => downloadJSON(result.flowchart, 'flowchart-diagram.json')}
           />
         )}
       </div>
 
+      {/* Footer */}
       <div style={{
-        textAlign: 'center',
         marginTop: '20px',
-        color: 'white',
-        fontSize: '0.9em'
+        padding: '15px',
+        background: '#F3F4F6',
+        borderRadius: '8px',
+        textAlign: 'center',
+        color: '#6B7280',
+        fontSize: '14px'
       }}>
-        ✨ Processed {result.inputLength} characters • Generated {result.gaps.length === 0 ? 'Complete' : 'Partial'} PRD
+        ✨ Processed {result.inputLength.toLocaleString()} characters • {result.hybrid.nodes.length} nodes in Hybrid • {result.flowchart.nodes.length} nodes in Flowchart
       </div>
     </div>
   );
@@ -197,77 +190,65 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset }) => {
 interface DiagramCardProps {
   title: string;
   subtitle: string;
-  mermaidCode: string;
+  data: DiagramData;
   onCopy: () => void;
   onDownload: () => void;
 }
 
-const DiagramCard: React.FC<DiagramCardProps> = ({ title, subtitle, mermaidCode, onCopy, onDownload }) => {
+const DiagramCard: React.FC<DiagramCardProps> = ({ title, subtitle, data, onCopy, onDownload }) => {
   return (
     <div style={{
       background: 'white',
-      borderRadius: '16px',
+      borderRadius: '8px',
       padding: '20px',
-      boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '15px'
       }}>
         <div>
-          <h3 style={{ fontSize: '1.3em', fontWeight: '700', color: '#1e293b' }}>
+          <h3 style={{ margin: '0 0 5px 0', fontSize: '18px', fontWeight: '600' }}>
             {title}
           </h3>
-          <p style={{ fontSize: '0.85em', color: '#64748b', marginTop: '3px' }}>
+          <p style={{ margin: 0, color: '#6B7280', fontSize: '14px' }}>
             {subtitle}
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button
             onClick={onCopy}
             style={{
               padding: '8px 15px',
-              border: '1px solid #e2e8f0',
-              borderRadius: '8px',
+              border: '1px solid #E5E7EB',
               background: 'white',
-              color: '#64748b',
-              fontSize: '0.85em',
-              fontWeight: '600',
-              cursor: 'pointer'
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
             }}
           >
-            📋 Copy
+            📋 Copy JSON
           </button>
           <button
             onClick={onDownload}
             style={{
               padding: '8px 15px',
-              border: '1px solid #e2e8f0',
-              borderRadius: '8px',
+              border: '1px solid #E5E7EB',
               background: 'white',
-              color: '#64748b',
-              fontSize: '0.85em',
-              fontWeight: '600',
-              cursor: 'pointer'
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
             }}
           >
-            💾 Download
+            ⬇️ Download
           </button>
         </div>
       </div>
-
-      <div style={{
-        background: '#f8fafc',
-        borderRadius: '12px',
-        padding: '20px',
-        overflow: 'auto',
-        maxHeight: '600px'
-      }}>
-        <pre className="mermaid">
-          {mermaidCode}
-        </pre>
+      
+      <div style={{ border: '1px solid #E5E7EB', borderRadius: '8px', overflow: 'hidden' }}>
+        <DiagramRenderer data={data} />
       </div>
     </div>
   );

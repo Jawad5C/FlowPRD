@@ -2,9 +2,29 @@ import React, { useState } from 'react';
 import FileUpload from './components/FileUpload';
 import ResultsDisplay from './components/ResultsDisplay';
 
+interface Node {
+  id: string;
+  shape: string;
+  text: string;
+  x: number;
+  y: number;
+  color: string;
+}
+
+interface Connection {
+  from: string;
+  to: string;
+  label?: string;
+}
+
+interface DiagramData {
+  nodes: Node[];
+  connections: Connection[];
+}
+
 interface TransformResult {
-  hybrid: string;
-  flowchart: string;
+  hybrid: DiagramData;
+  flowchart: DiagramData;
   gaps: string[];
   inputLength: number;
 }

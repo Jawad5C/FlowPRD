@@ -29,72 +29,75 @@ def transform_to_mermaid(prd_text: str) -> Optional[Dict[str, str]]:
         model = genai.GenerativeModel('gemini-2.5-flash')
         
         # Create the prompt for Gemini
-        prompt = f"""You are a Mermaid diagram expert. Transform this PRD into TWO valid Mermaid flowcharts.
+        prompt = f"""You are a PRD analysis expert. Transform this PRD into a structured JSON diagram.
 
-CRITICAL RULES - FOLLOW EXACTLY:
-1. Start EVERY diagram with: flowchart TD
-2. Node IDs: ONLY letters/numbers (A, B, C, step1, etc.) - NO spaces, NO special chars
-3. Node text: ALWAYS use double quotes ["text here"]
-4. NEVER use these characters in text: ( ) [ ] {{ }} : ; | \\ < >
-5. Replace special chars: Use dash for hyphen, spell out symbols
-6. Line breaks: Use <br/> tag (not \\n or br)
-7. Arrows: ONLY use -->
+CRITICAL: Output ONLY valid JSON. Use these 7 shape types:
 
-VALID EXAMPLE:
-flowchart TD
-    A["Start - User identifies problem"] --> B["Analyze requirements and constraints"]
-    B --> C["Design solution with 3 key features"]
-    C --> D["Implement and test"]
+Shape Types & Colors:
+1. "stadium" - Start/End/Users/Actors - Color: "#10B981" (green)
+2. "rectangle" - Features/Actions/Processes - Color: "#8B5CF6" (purple)  
+3. "rounded_box" - Problem/Solution/Descriptions - Color: "#3B82F6" (blue)
+4. "parallelogram" - Functional Requirements - Color: "#F59E0B" (orange)
+5. "diamond" - Decisions/Questions/Status - Color: "#EAB308" (yellow)
+6. "hexagon" - Constraints/Rules/Principles - Color: "#EF4444" (red)
+7. "cylinder" - Databases/Storage/Data - Color: "#06B6D4" (cyan)
 
-INVALID (DO NOT DO):
-- A[Start: Problem] ❌ (colon breaks it)
-- B("Text with (parens)") ❌ (parentheses break it)
-- C{{Decision?}} ❌ (question mark breaks it)
+PRD Sections to Extract:
+- Problem/Pain Points → rounded_box (blue)
+- Users/Actors → stadium (green)
+- Solution/Features → rectangle (purple)
+- Functional Requirements → parallelogram (orange)
+- Technical Decisions → diamond (yellow)
+- Constraints/Rules → hexagon (red)
+- Data/Storage → cylinder (cyan)
 
-1. **HYBRID VERSION**: Detailed flowchart with RICH text and VARIED shapes
-   - USE THESE EXACT SHAPE FORMATS WITH TEXT LENGTH RULES:
-     * Rectangle ["text"]: Detailed text BUT break into lines using <br/>
-       - CRITICAL: Each line max 60-70 characters
-       - Use <br/> to break text every 60-70 chars
-       - Creates 2:1 length-to-width ratio
-       - Example: ["Users need better PRD visualization tools that are affordable.<br/>Current solutions like Confluence and Notion are expensive.<br/>Teams struggle with dense text-only requirements documents."]
-     * Oval/Stadium (["text"]): Medium text (50-80 chars) - use for Start/End/Actors
-     * Diamond {{"text"}}: SHORT text ONLY (10-30 chars max) - use for Decisions/Questions
-     * Parallelogram [/"text"/]: Medium text (40-60 chars) - use for Input/Output
-     * Cylinder [("text")]: Medium text (40-60 chars) - use for Data/Storage
-   - Include ALL PRD sections
-   - IMPORTANT: Always break long rectangle text with <br/> every 40-50 characters
+If a section is MISSING, create node with text "[Section Missing - Needs Definition]"
 
-2. **FLOWCHART-ONLY VERSION**: Visual workflow following UML conventions
-   - MANDATORY SHAPE USAGE BY TYPE:
-     * Start/End: MUST use ovals (["text"])
-     * Process/Action: Use rectangles ["text"] with short text (20-30 chars max)
-     * Decisions/Conditionals: MUST use diamonds {{"text"}} - always use for yes/no questions (10-20 chars)
-     * Input/Output: Use parallelograms [/"text"/] (20-30 chars)
-     * Data storage: Use cylinders [("text")] (20-30 chars)
-   - Keep ALL text short (no <br/> needed in flowchart)
-   - Focus on proper flowchart conventions
-   - Every decision point MUST be a diamond with yes/no branches
+1. **HYBRID VERSION**: Detailed diagram with rich text in shapes
+   - Extract ALL PRD sections
+   - Choose appropriate shape for each section type
+   - Text length by shape:
+     * rounded_box/rectangle: 80-120 chars (can be long, will wrap)
+     * stadium: 40-60 chars
+     * diamond: 15-25 chars (keep SHORT)
+     * parallelogram: 50-70 chars
+     * hexagon: 40-60 chars
+     * cylinder: 30-50 chars
+   - Position nodes vertically with good spacing (y: 0, 150, 300, etc.)
+   - Connect related nodes with arrows
+
+2. **FLOWCHART VERSION**: Simplified workflow diagram
+   - Show main flow only (Problem → Solution → Requirements → Implementation)
+   - Shorter text (20-40 chars per node)
+   - Use proper shapes for workflow (stadium for start/end, diamond for decisions)
+   - Clear top-to-bottom flow
 
 PRD CONTENT:
 {prd_text}
 
-Return in this EXACT format:
+Return in this EXACT JSON format:
 
-HYBRID:
-```mermaid
-flowchart TD
-    [your code here]
-```
-
-FLOWCHART:
-```mermaid
-flowchart TD
-    [your code here]
-```
-
-GAPS:
-- [missing sections or "None"]
+{{
+  "hybrid": {{
+    "nodes": [
+      {{"id": "A", "shape": "rounded_box", "text": "Problem: ...", "x": 400, "y": 50, "color": "#3B82F6"}},
+      {{"id": "B", "shape": "stadium", "text": "Users: ...", "x": 400, "y": 200, "color": "#10B981"}}
+    ],
+    "connections": [
+      {{"from": "A", "to": "B", "label": ""}}
+    ]
+  }},
+  "flowchart": {{
+    "nodes": [
+      {{"id": "A", "shape": "stadium", "text": "Start", "x": 400, "y": 50, "color": "#10B981"}},
+      {{"id": "B", "shape": "rectangle", "text": "Analyze", "x": 400, "y": 150, "color": "#8B5CF6"}}
+    ],
+    "connections": [
+      {{"from": "A", "to": "B", "label": ""}}
+    ]
+  }},
+  "gaps": ["Missing sections or empty array"]
+}}
 """
         
         print("🤖 Calling Gemini API...")
@@ -118,121 +121,54 @@ GAPS:
 
 def parse_gemini_response(response: str) -> Dict[str, any]:
     """
-    Parse Gemini's response to extract Hybrid, Flowchart, and Gaps.
+    Parse Gemini's JSON response to extract Hybrid, Flowchart, and Gaps.
     
     Args:
-        response: Raw response from Gemini
+        response: Raw response from Gemini (should be JSON)
         
     Returns:
         Dictionary with hybrid, flowchart, and gaps keys
     """
+    import json
+    import re
+    
     result = {
-        'hybrid': '',
-        'flowchart': '',
+        'hybrid': {'nodes': [], 'connections': []},
+        'flowchart': {'nodes': [], 'connections': []},
         'gaps': []
     }
     
     try:
-        # Extract HYBRID section
-        if 'HYBRID:' in response:
-            hybrid_start = response.find('HYBRID:')
-            hybrid_section = response[hybrid_start:]
-            
-            # Find mermaid code block
-            if '```mermaid' in hybrid_section:
-                start = hybrid_section.find('```mermaid') + len('```mermaid')
-                end = hybrid_section.find('```', start)
-                result['hybrid'] = clean_mermaid_syntax(hybrid_section[start:end].strip())
+        # Try to extract JSON from response (might have markdown code blocks)
+        json_match = re.search(r'```json\s*(.*?)\s*```', response, re.DOTALL)
+        if json_match:
+            json_str = json_match.group(1)
+        else:
+            # Try to find raw JSON
+            json_match = re.search(r'\{.*\}', response, re.DOTALL)
+            if json_match:
+                json_str = json_match.group(0)
+            else:
+                json_str = response
         
-        # Extract FLOWCHART section
-        if 'FLOWCHART:' in response:
-            flowchart_start = response.find('FLOWCHART:')
-            flowchart_section = response[flowchart_start:]
-            
-            # Find mermaid code block
-            if '```mermaid' in flowchart_section:
-                start = flowchart_section.find('```mermaid') + len('```mermaid')
-                end = flowchart_section.find('```', start)
-                result['flowchart'] = clean_mermaid_syntax(flowchart_section[start:end].strip())
+        # Parse JSON
+        data = json.loads(json_str)
         
-        # Extract GAPS section
-        if 'GAPS:' in response:
-            gaps_start = response.find('GAPS:')
-            gaps_section = response[gaps_start:].split('\n')
-            
-            for line in gaps_section[1:]:  # Skip the "GAPS:" line
-                line = line.strip()
-                if line.startswith('-') or line.startswith('•'):
-                    gap = line.lstrip('-•').strip()
-                    if gap and gap.lower() != 'none':
-                        result['gaps'].append(gap)
+        result['hybrid'] = data.get('hybrid', result['hybrid'])
+        result['flowchart'] = data.get('flowchart', result['flowchart'])
+        result['gaps'] = data.get('gaps', [])
         
-        print(f"📊 Parsed: Hybrid={len(result['hybrid'])} chars, Flowchart={len(result['flowchart'])} chars, Gaps={len(result['gaps'])}")
+        print(f"📊 Parsed: Hybrid={len(result['hybrid'].get('nodes', []))} nodes, Flowchart={len(result['flowchart'].get('nodes', []))} nodes, Gaps={len(result['gaps'])}")
         
         return result
         
+    except json.JSONDecodeError as e:
+        print(f"❌ JSON parsing error: {e}")
+        print(f"Response preview: {response[:500]}")
+        return result
     except Exception as e:
         print(f"Error parsing Gemini response: {e}")
         return result
-
-
-def clean_mermaid_syntax(mermaid_code: str) -> str:
-    """
-    Clean Mermaid code to ensure valid syntax.
-    Only cleans TEXT content, preserves shape syntax.
-    """
-    import re
-    
-    lines = mermaid_code.split('\n')
-    cleaned_lines = []
-    
-    for line in lines:
-        if not line.strip():
-            continue
-            
-        # Keep flowchart declaration as-is
-        if line.strip().startswith('flowchart'):
-            cleaned_lines.append(line)
-            continue
-        
-        # Find and clean ONLY the text inside quotes, preserve shape syntax
-        def clean_text_only(match):
-            text = match.group(1)
-            # Remove problematic characters that break Mermaid
-            text = text.replace(':', ' -')
-            text = text.replace(';', ',')
-            text = text.replace('|', ' ')
-            text = text.replace('\\', '/')
-            text = text.replace('"', "'")  # Inner quotes to apostrophes
-            text = text.replace('`', "'")
-            text = text.replace('#', 'num')  # Hash can cause issues
-            text = text.replace('$', '')     # Dollar sign issues
-            text = text.replace('%', ' percent')
-            text = text.replace('&', ' and ')
-            text = text.replace('*', '')
-            text = text.replace('+', ' plus ')
-            text = text.replace('=', ' equals ')
-            text = text.replace('~', '')
-            text = text.replace('^', '')
-            # Clean up HTML-like tags that might break
-            text = re.sub(r'<(?!br\/>)', ' ', text)
-            text = re.sub(r'(?<!<br)>', ' ', text)
-            # Clean up multiple spaces
-            text = re.sub(r'\s+', ' ', text).strip()
-            # Escape any remaining problematic characters
-            text = text.replace('[', '').replace(']', '')
-            return f'"{text}"'
-        
-        # Only clean text inside quotes, leave shape syntax alone
-        line = re.sub(r'"([^"]*)"', clean_text_only, line)
-        
-        # Ensure proper arrow spacing
-        line = line.replace('-->', ' --> ')
-        line = re.sub(r'\s+', ' ', line).strip()
-        
-        cleaned_lines.append(line)
-    
-    return '\n'.join(cleaned_lines)
 
 
 if __name__ == '__main__':
@@ -241,6 +177,6 @@ if __name__ == '__main__':
     result = transform_to_mermaid(test_text)
     if result:
         print("\n✅ Test successful!")
-        print(f"Hybrid length: {len(result['hybrid'])}")
-        print(f"Flowchart length: {len(result['flowchart'])}")
+        print(f"Hybrid nodes: {len(result['hybrid'].get('nodes', []))}")
+        print(f"Flowchart nodes: {len(result['flowchart'].get('nodes', []))}")
         print(f"Gaps detected: {result['gaps']}")
