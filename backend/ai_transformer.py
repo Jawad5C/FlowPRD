@@ -52,28 +52,26 @@ INVALID (DO NOT DO):
 - C{{Decision?}} ❌ (question mark breaks it)
 
 1. **HYBRID VERSION**: Detailed flowchart with RICH text and VARIED shapes
-   - USE THESE EXACT SHAPE FORMATS:
-     * Rectangle: A["text"]
-     * Oval/Stadium: B(["text"])
-     * Diamond: C{{"text"}}
-     * Parallelogram: D[/"text"/]
-     * Cylinder: E[("text")]
-   - Include ALL PRD sections (Problem, Solution, Requirements, etc.)
-   - Put DETAILED text in nodes:
-     * Short sections: Complete text (cleaned)
-     * Long sections: 100-200 char summary (cleaned)
-   - Use <br/> for line breaks in long text
-   - Mix different shapes to show different types of information
-   - CLEAN text: remove : ; | inside quotes only
+   - USE THESE EXACT SHAPE FORMATS WITH APPROPRIATE TEXT LENGTH:
+     * Rectangle ["text"]: Long detailed text (100-200 chars) - use for Problem, Solution, Requirements
+     * Oval/Stadium (["text"]): Medium text (50-80 chars) - use for Start/End/Actors
+     * Diamond {{"text"}}: SHORT text ONLY (10-30 chars) - use for Decisions/Questions
+     * Parallelogram [/"text"/]: Medium text (40-60 chars) - use for Input/Output
+     * Cylinder [("text")]: Medium text (40-60 chars) - use for Data/Storage
+   - Include ALL PRD sections
+   - IMPORTANT: Keep diamond text SHORT so they stay small
+   - Use <br/> for line breaks in rectangles only
 
-2. **FLOWCHART-ONLY VERSION**: Visual workflow with VARIED shapes
-   - USE SHAPE VARIETY:
-     * Start/End: (["text"])
-     * Process steps: ["text"]
-     * Decisions: {{"text"}}
-     * Input/Output: [/"text"/]
-   - Shorter text (20-40 chars per node)
-   - Focus on flow and visual clarity
+2. **FLOWCHART-ONLY VERSION**: Visual workflow following UML conventions
+   - MANDATORY SHAPE USAGE BY TYPE:
+     * Start/End: MUST use ovals (["text"])
+     * Process/Action: Use rectangles ["text"]
+     * Decisions/Conditionals: MUST use diamonds {{"text"}} - always use for yes/no questions
+     * Input/Output: Use parallelograms [/"text"/]
+     * Data storage: Use cylinders [("text")]
+   - Keep ALL text short (15-30 chars)
+   - Focus on proper flowchart conventions
+   - Every decision point MUST be a diamond with yes/no branches
 
 PRD CONTENT:
 {prd_text}
