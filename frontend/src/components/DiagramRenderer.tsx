@@ -110,8 +110,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
           x={node.x}
           y={node.y}
           color={node.color}
-          width={220}
-          height={80}
+          width={280}
+          height={100}
         />
       ))}
     </svg>
