@@ -97,31 +97,37 @@ MANDATORY PRD SECTIONS (create nodes for ALL 10, even if missing):
     - Full text: External dependencies, risks, blockers
     - If missing: "[Dependencies Missing]" + suggest "What could block this project?"
 
-POSITIONING RULES - ORGANIC SPATIAL LAYOUT:
-- CRITICAL: Use EXACTLY these coordinates with NO deviations:
+POSITIONING RULES - ORGANIC FLOW LAYOUT (matching reference spatial pattern):
+- CRITICAL: Use EXACTLY these coordinates for branching flow:
   
-  TOP-LEFT CLUSTER (Problem/Opportunity):
-  * Node 1 (Problem): x=300, y=200
-  * Node 2 (Opportunity): x=300, y=500
+  START (Left side):
+  * Node 1 (Problem): x=200, y=250
+  * Node 2 (Opportunity): x=200, y=550
   
-  TOP-RIGHT CLUSTER (Users/Solution):
-  * Node 3 (Users): x=950, y=200
-  * Node 4 (Solution): x=950, y=500
+  CONVERGE POINT (Center-left):
+  * Node 3 (Users): x=550, y=400
   
-  MIDDLE-LEFT CLUSTER (Requirements/Tech):
-  * Node 5 (Requirements): x=280, y=850
-  * Node 6 (Tech Stack): x=650, y=850
+  SOLUTION BRANCH (Center):
+  * Node 4 (Solution): x=900, y=250
+  * Node 5 (Requirements): x=900, y=550
   
-  MIDDLE-RIGHT CLUSTER (Metrics/Scope):
-  * Node 7 (Metrics): x=1000, y=850
-  * Node 8 (Out of Scope): x=1350, y=850
+  PARALLEL PATHS (Right side):
+  * Node 6 (Tech Stack): x=1250, y=150
+  * Node 7 (Metrics): x=1250, y=400
+  * Node 8 (Out of Scope): x=1250, y=650
   
-  BOTTOM CLUSTER (Timeline/Dependencies):
-  * Node 9 (Timeline): x=500, y=1200
-  * Node 10 (Dependencies): x=950, y=1200
+  FINAL CONVERGENCE (Far right):
+  * Node 9 (Timeline): x=1600, y=300
+  * Node 10 (Dependencies): x=1600, y=550
 
-- Connect nodes in logical reading flow:
-  A→B (down), B→C (diagonal right-up), C→D (down), D→E (diagonal left-down), E→F (right), F→G (right), G→H (right), H→I (diagonal left-down), I→J (right)
+- Connect nodes with branching and convergence:
+  A→C, B→C (Problem and Opportunity converge to Users)
+  C→D, C→E (Users branches to Solution and Requirements)
+  D→F, E→F (Solution and Requirements converge to Tech Stack)
+  D→G (Solution to Metrics)
+  E→H (Requirements to Out of Scope)
+  F→I, G→I (Tech Stack and Metrics converge to Timeline)
+  H→J, I→J (Out of Scope and Timeline to Dependencies)
 
 CONTENT EXTRACTION RULES:
 - If section EXISTS: Extract actual content
