@@ -42,7 +42,7 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
   const findNode = (id: string) => nodes.find(n => n.id === id);
   
   // Render arrow between nodes (smart edge detection for any angle)
-  const renderConnection = (conn: Connection) => {
+  const renderConnection = (conn: Connection, index: number) => {
     const fromNode = findNode(conn.from);
     const toNode = findNode(conn.to);
     
@@ -83,18 +83,22 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
       y2 = toNode.y + (Math.sin(reverseAngle) > 0 ? shapeHeight/2 : -shapeHeight/2);
     }
     
+    // Unique marker ID for each connection
+    const markerId = `arrowhead-${index}`;
+    
     return (
       <g key={`${conn.from}-${conn.to}`}>
         <defs>
           <marker
-            id={`arrowhead-${conn.from}-${conn.to}`}
-            markerWidth="10"
-            markerHeight="10"
-            refX="9"
-            refY="3"
+            id={markerId}
+            markerWidth="12"
+            markerHeight="12"
+            refX="10"
+            refY="6"
             orient="auto"
+            markerUnits="strokeWidth"
           >
-            <polygon points="0 0, 10 3, 0 6" fill="#94A3B8" />
+            <polygon points="0 0, 12 6, 0 12" fill="#94A3B8" />
           </marker>
         </defs>
         <line
@@ -103,8 +107,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
           x2={x2}
           y2={y2}
           stroke="#94A3B8"
-          strokeWidth="2"
-          markerEnd={`url(#arrowhead-${conn.from}-${conn.to})`}
+          strokeWidth="3"
+          markerEnd={`url(#${markerId})`}
         />
         {conn.label && (
           <text
@@ -112,7 +116,7 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
             y={(y1 + y2) / 2}
             textAnchor="middle"
             fill="#E2E8F0"
-            fontSize="12"
+            fontSize="14"
             fontFamily="Arial, sans-serif"
           >
             {conn.label}
@@ -131,7 +135,7 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
       style={{ background: '#0F172A', borderRadius: '8px', maxHeight: '80vh' }}
     >
       {/* Render connections first (behind nodes) */}
-      {connections.map(renderConnection)}
+      {connections.map((conn, index) => renderConnection(conn, index))}
       
       {/* Render nodes */}
       {nodes.map(node => (

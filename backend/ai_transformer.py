@@ -103,27 +103,27 @@ POSITIONING RULES - COMPACT TOP-DOWN FLOW LAYOUT:
   
   TOP ROW (y=200):
   * Node 0 (START): x=400, y=200
-  * Node 3 (Users): x=1400, y=200
+  * Node 3 (Users): x=1500, y=200
   
   LEFT COLUMN - VERTICAL (Problem & Opportunity):
   * Node 1 (Problem): x=400, y=700
   * Node 2 (Opportunity): x=400, y=1200
   
   RIGHT COLUMN - SOLUTION PATH:
-  * Node 4 (Solution): x=1400, y=700
-  * Node 5 (Requirements): x=1400, y=1200
+  * Node 4 (Solution): x=1500, y=700
+  * Node 5 (Requirements): x=1500, y=1200
   
-  BOTTOM ROW - TECH & METRICS:
-  * Node 6 (Tech Stack): x=1400, y=1700
-  * Node 7 (Metrics): x=1900, y=1700
-  * Node 8 (Out of Scope): x=2400, y=1700
+  BOTTOM ROW - TECH & METRICS (increased spacing to prevent overlap):
+  * Node 6 (Tech Stack): x=1500, y=1700
+  * Node 7 (Metrics): x=2200, y=1700
+  * Node 8 (Out of Scope): x=2900, y=1700
   
-  FINAL ROW - DECISIONS:
-  * Node 9 (Timeline): x=2400, y=2200
-  * Node 10 (Dependencies): x=2900, y=2200
+  FINAL ROW - DECISIONS (increased spacing to prevent overlap):
+  * Node 9 (Timeline): x=2900, y=2200
+  * Node 10 (Dependencies): x=3600, y=2200
   
   END:
-  * Node 11 (END): x=2900, y=2700
+  * Node 11 (END): x=3600, y=2700
 
 - Connect nodes following the specified flow:
   START → Problem (down)
