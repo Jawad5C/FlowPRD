@@ -98,38 +98,40 @@ MANDATORY NODES (create ALL 12, including START/END):
 11. **END** (stadium, green)
     - Always present: text="END", color="#10B981" (green)
 
-POSITIONING RULES - UML-ALIGNED ORGANIC FLOW (12 nodes with START/END):
+POSITIONING RULES - COMPACT TOP-DOWN FLOW LAYOUT:
 - CRITICAL: Use EXACTLY these coordinates:
   
-  START NODE:
-  * Node 0 (START): x=100, y=400
+  TOP ROW (y=100):
+  * Node 0 (START): x=250, y=100
+  * Node 3 (Users): x=800, y=100
   
-  LEFT SIDE (Problem/Opportunity):
-  * Node 1 (Problem): x=300, y=250
-  * Node 2 (Opportunity): x=300, y=550
+  SECOND ROW (y=350):
+  * Node 1 (Problem): x=150, y=350
+  * Node 2 (Opportunity): x=350, y=350
+  * Node 4 (Solution): x=700, y=350
+  * Node 5 (Requirements): x=900, y=350
   
-  CENTER-LEFT (Users):
-  * Node 3 (Users): x=650, y=400
+  THIRD ROW (y=600):
+  * Node 6 (Tech Stack): x=900, y=600
+  * Node 7 (Metrics): x=1200, y=600
+  * Node 8 (Out of Scope): x=1500, y=600
   
-  CENTER (Solution/Requirements):
-  * Node 4 (Solution): x=1000, y=250
-  * Node 5 (Requirements): x=1000, y=550
+  FOURTH ROW (y=850):
+  * Node 9 (Timeline): x=1500, y=850
+  * Node 10 (Dependencies): x=1800, y=850
   
-  RIGHT SIDE (Implementation):
-  * Node 6 (Tech Stack): x=1350, y=150
-  * Node 7 (Metrics): x=1350, y=400
-  * Node 8 (Out of Scope): x=1350, y=650
-  
-  FAR RIGHT (Timeline/Dependencies):
-  * Node 9 (Timeline): x=1700, y=300
-  * Node 10 (Dependencies): x=1700, y=550
-  
-  END NODE:
-  * Node 11 (END): x=1950, y=450
+  BOTTOM (y=1100):
+  * Node 11 (END): x=1800, y=1100
 
-- Connect nodes in SEQUENTIAL ORDER (START→1→2→3→4→5→6→7→8→9→10→END):
-  START → Problem → Opportunity → Users → Solution → Requirements
-  → Tech Stack → Metrics → Out of Scope → Timeline → Dependencies → END
+- Connect nodes following your specified flow:
+  START → Problem (down-left), START → Opportunity (down-right)
+  Problem → Users (diagonal up-right), Opportunity → Users (diagonal up-right)
+  Users → Solution (down-left), Users → Requirements (down-right)
+  Requirements → Tech Stack (down)
+  Tech Stack → Metrics (right), Metrics → Out of Scope (right)
+  Out of Scope → Timeline (down)
+  Timeline → Dependencies (right)
+  Dependencies → END (down)
 
 CONTENT EXTRACTION RULES:
 - If section EXISTS: Extract actual content
