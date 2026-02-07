@@ -101,29 +101,29 @@ MANDATORY NODES (create ALL 12, including START/END):
 POSITIONING RULES - COMPACT TOP-DOWN FLOW LAYOUT:
 - CRITICAL: Use EXACTLY these coordinates:
   
-  TOP ROW (y=200):
-  * Node 0 (START): x=400, y=200
-  * Node 3 (Users): x=1500, y=200
+  TOP ROW (y=300):
+  * Node 0 (START): x=600, y=300
+  * Node 3 (Users): x=2250, y=300
   
   LEFT COLUMN - VERTICAL (Problem & Opportunity):
-  * Node 1 (Problem): x=400, y=700
-  * Node 2 (Opportunity): x=400, y=1200
+  * Node 1 (Problem): x=600, y=1050
+  * Node 2 (Opportunity): x=600, y=1800
   
   RIGHT COLUMN - SOLUTION PATH:
-  * Node 4 (Solution): x=1500, y=700
-  * Node 5 (Requirements): x=1500, y=1200
+  * Node 4 (Solution): x=2250, y=1050
+  * Node 5 (Requirements): x=2250, y=1800
   
-  BOTTOM ROW - TECH & METRICS (increased spacing to prevent overlap):
-  * Node 6 (Tech Stack): x=1500, y=1700
-  * Node 7 (Metrics): x=2200, y=1700
-  * Node 8 (Out of Scope): x=2900, y=1700
+  BOTTOM ROW - TECH & METRICS (spacing: 1050px between shapes):
+  * Node 6 (Tech Stack): x=2250, y=2550
+  * Node 7 (Metrics): x=3300, y=2550
+  * Node 8 (Out of Scope): x=4350, y=2550
   
-  FINAL ROW - DECISIONS (increased spacing to prevent overlap):
-  * Node 9 (Timeline): x=2900, y=2200
-  * Node 10 (Dependencies): x=3600, y=2200
+  FINAL ROW - DECISIONS (spacing: 1050px between shapes):
+  * Node 9 (Timeline): x=4350, y=3300
+  * Node 10 (Dependencies): x=5400, y=3300
   
   END:
-  * Node 11 (END): x=3600, y=2700
+  * Node 11 (END): x=5400, y=4050
 
 - Connect nodes following the specified flow:
   START → Problem (down)

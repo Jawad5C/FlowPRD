@@ -53,9 +53,9 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
     const dy = toNode.y - fromNode.y;
     const angle = Math.atan2(dy, dx);
     
-    // Shape dimensions (accounting for label space)
-    const shapeWidth = 540; // Updated to match new shape size (20% larger)
-    const shapeHeight = 223; // 192 + 31 for label space
+    // Shape dimensions (accounting for label space) - scaled 1.5x
+    const shapeWidth = 810;
+    const shapeHeight = 335; // 288 + 47 for label space
     
     // Calculate edge points based on angle
     // For "from" node - find exit point on edge
@@ -84,21 +84,21 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
     }
     
     // Unique marker ID for each connection
-    const markerId = `arrowhead-${index}`;
+    const markerId = `arrowhead-conn-${index}`;
     
     return (
-      <g key={`${conn.from}-${conn.to}`}>
+      <g key={`${conn.from}-${conn.to}-${index}`}>
         <defs>
           <marker
             id={markerId}
-            markerWidth="12"
-            markerHeight="12"
-            refX="10"
-            refY="6"
+            markerWidth="18"
+            markerHeight="18"
+            refX="15"
+            refY="9"
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <polygon points="0 0, 12 6, 0 12" fill="#94A3B8" />
+            <polygon points="0 0, 18 9, 0 18" fill="#94A3B8" />
           </marker>
         </defs>
         <line
@@ -107,7 +107,7 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
           x2={x2}
           y2={y2}
           stroke="#94A3B8"
-          strokeWidth="3"
+          strokeWidth="4"
           markerEnd={`url(#${markerId})`}
         />
         {conn.label && (
@@ -116,7 +116,7 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
             y={(y1 + y2) / 2}
             textAnchor="middle"
             fill="#E2E8F0"
-            fontSize="14"
+            fontSize="21"
             fontFamily="Arial, sans-serif"
           >
             {conn.label}
@@ -147,8 +147,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
           x={node.x}
           y={node.y}
           color={node.color}
-          width={540}
-          height={192}
+          width={810}
+          height={288}
         />
       ))}
     </svg>
