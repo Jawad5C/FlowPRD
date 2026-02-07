@@ -54,8 +54,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
     const angle = Math.atan2(dy, dx);
     
     // Shape dimensions (accounting for label space)
-    const shapeWidth = 450; // Updated to match new shape size
-    const shapeHeight = 186; // 160 + 26 for label space
+    const shapeWidth = 540; // Updated to match new shape size (20% larger)
+    const shapeHeight = 223; // 192 + 31 for label space
     
     // Calculate edge points based on angle
     // For "from" node - find exit point on edge
@@ -143,8 +143,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
           x={node.x}
           y={node.y}
           color={node.color}
-          width={320}
-          height={120}
+          width={540}
+          height={192}
         />
       ))}
     </svg>
