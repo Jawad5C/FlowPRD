@@ -140,7 +140,7 @@ POSITIONING RULES - COMPACT TOP-DOWN FLOW LAYOUT:
 
 CONTENT EXTRACTION RULES:
 - If section EXISTS: Extract actual content
-  * Summary: Intelligently condense to 30-50 chars
+  * Summary: Intelligently condense to 80-120 chars (comprehensive with key details)
   * Full text: Include complete content (max 500 chars, summarize if longer)
 - If section MISSING: 
   * Summary: "[Section Name Missing]"
