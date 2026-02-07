@@ -146,14 +146,19 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset }) => {
         </div>
       )}
 
-      {/* Single Full-Width Diagram */}
+      {/* Single Full-Width Diagram with Scrolling */}
       <div style={{
         background: 'white',
         borderRadius: '8px',
         padding: '20px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
-        <div style={{ border: '1px solid #E5E7EB', borderRadius: '8px', overflow: 'hidden' }}>
+        <div style={{ 
+          border: '1px solid #E5E7EB', 
+          borderRadius: '8px', 
+          overflow: 'auto',
+          maxHeight: '85vh'
+        }}>
           <DiagramRenderer data={diagramData} />
         </div>
       </div>
