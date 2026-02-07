@@ -131,8 +131,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
       width="100%"
       height="auto"
       viewBox={`${minX} ${minY} ${width} ${height}`}
-      preserveAspectRatio="xMidYMid meet"
-      style={{ background: '#0F172A', borderRadius: '8px', maxHeight: '80vh' }}
+      preserveAspectRatio="xMinYMin meet"
+      style={{ background: '#0F172A', borderRadius: '8px', minHeight: '100vh', maxWidth: 'none' }}
     >
       {/* Render connections first (behind nodes) */}
       {connections.map((conn, index) => renderConnection(conn, index))}
