@@ -83,24 +83,22 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
       y2 = toNode.y + (Math.sin(reverseAngle) > 0 ? shapeHeight/2 : -shapeHeight/2);
     }
     
-    // Unique marker ID for each connection
-    const markerId = `arrowhead-conn-${index}`;
+    // Unique marker ID for each connection - ensure globally unique
+    const markerId = `arrowhead-${conn.from}-${conn.to}-${index}`;
     
     return (
       <g key={`${conn.from}-${conn.to}-${index}`}>
-        <defs>
-          <marker
-            id={markerId}
-            markerWidth="9"
-            markerHeight="9"
-            refX="8"
-            refY="4.5"
-            orient="auto"
-            markerUnits="strokeWidth"
-          >
-            <polygon points="0 0, 9 4.5, 0 9" fill="#94A3B8" />
-          </marker>
-        </defs>
+        <marker
+          id={markerId}
+          markerWidth="9"
+          markerHeight="9"
+          refX="8"
+          refY="4.5"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <polygon points="0 0, 9 4.5, 0 9" fill="#94A3B8" />
+        </marker>
         <line
           x1={x1}
           y1={y1}
@@ -134,6 +132,27 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
       preserveAspectRatio="xMinYMin meet"
       style={{ background: '#0F172A', borderRadius: '8px', minHeight: '100vh', maxWidth: 'none' }}
     >
+      {/* Define all arrowhead markers in SVG defs */}
+      <defs>
+        {connections.map((conn, index) => {
+          const markerId = `arrowhead-${conn.from}-${conn.to}-${index}`;
+          return (
+            <marker
+              key={markerId}
+              id={markerId}
+              markerWidth="9"
+              markerHeight="9"
+              refX="8"
+              refY="4.5"
+              orient="auto"
+              markerUnits="strokeWidth"
+            >
+              <polygon points="0 0, 9 4.5, 0 9" fill="#94A3B8" />
+            </marker>
+          );
+        })}
+      </defs>
+      
       {/* Render connections first (behind nodes) */}
       {connections.map((conn, index) => renderConnection(conn, index))}
       

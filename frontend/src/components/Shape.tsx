@@ -241,11 +241,11 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
         x={x}
         y={labelY}
         textAnchor="middle"
-        fill="#94A3B8"
+        fill="#000000"
         fontSize="26"
         fontFamily="Arial, sans-serif"
-        fontWeight="600"
-        opacity="0.8"
+        fontWeight="700"
+        opacity="0.9"
       >
         {shapeLabels[type] || type.toUpperCase()}
       </text>
