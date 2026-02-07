@@ -12,14 +12,15 @@ pip install -r requirements.txt
 2. **Configure environment:**
 ```bash
 cp .env.example .env
-# Edit .env and add your CLAUDE_API_KEY
+# Edit .env and add your GEMINI_API_KEY
 ```
 
-3. **Get Claude API Key:**
-- Go to: https://console.anthropic.com/
-- Create account / Sign in
-- Generate API key
-- Add to `.env` file
+3. **Get Gemini API Key (FREE):**
+- Go to: https://aistudio.google.com/app/apikey
+- Sign in with Google account
+- Click "Create API Key"
+- Copy and add to `.env` file
+- No credit card required!
 
 4. **Run server:**
 ```bash
@@ -43,7 +44,7 @@ Health check endpoint.
 ```
 
 ### `POST /api/transform`
-Transform PRD file or text into Mermaid diagrams.
+Transform PRD file or text into structured visual diagram data.
 
 **Request (File Upload):**
 - Content-Type: `multipart/form-data`
@@ -57,9 +58,14 @@ Transform PRD file or text into Mermaid diagrams.
 ```json
 {
   "success": true,
-  "hybrid": "graph TB\n...",
-  "flowchart": "graph TB\n...",
-  "gaps_detected": ["Missing Success Metrics", "Missing Out of Scope"],
+  "nodes": [
+    {"id": "A", "shape": "rounded_box", "text": "Problem: ...", "fullText": "...", "x": 400, "y": 100, "color": "#3B82F6"},
+    {"id": "B", "shape": "stadium", "text": "Users: ...", "fullText": "...", "x": 400, "y": 350, "color": "#10B981"}
+  ],
+  "connections": [
+    {"from": "A", "to": "B", "label": ""}
+  ],
+  "gaps_detected": ["Opportunity", "Timeline/Phases"],
   "input_length": 5000
 }
 ```
@@ -76,12 +82,18 @@ Max file size: 5MB (configurable in .env)
 
 ## AI Processing
 
-Uses Claude Sonnet 4.5 (Anthropic) to:
-1. Parse PRD content
-2. Extract structure
-3. Generate Hybrid Mermaid diagram (visual + text)
-4. Generate Flowchart-only diagram (pure visual)
-5. Detect missing sections
+Uses **Gemini 2.5 Flash** (Google - FREE) to:
+1. Parse PRD content into 10 standard sections
+2. Extract structure and detect gaps
+3. Generate JSON with nodes (text + fullText for tooltips)
+4. Create connections between sections
+5. Provide AI suggestions for missing sections
+
+**Why Gemini?**
+- ✅ FREE (60 requests/minute)
+- ✅ 1M token context window
+- ✅ No credit card required
+- ✅ High-quality structured output (JSON)
 
 ## Testing
 

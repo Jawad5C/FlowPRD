@@ -1,6 +1,6 @@
 """
 FlowPRD Backend - AI-Powered PRD Transformer
-Transforms any PRD format into visual Mermaid diagrams
+Transforms any PRD format into visual diagrams with custom shapes
 """
 
 from flask import Flask, request, jsonify
@@ -12,7 +12,7 @@ from pathlib import Path
 
 # Import our modules
 from file_parser import parse_file
-from ai_transformer import transform_to_mermaid
+from ai_transformer import transform_to_diagram
 
 # Load environment variables
 load_dotenv()
@@ -48,7 +48,7 @@ def health_check():
 
 @app.route('/api/transform', methods=['POST'])
 def transform_prd():
-    """Transform uploaded PRD into Mermaid diagrams."""
+    """Transform uploaded PRD into structured visual diagram."""
     try:
         # Check for file or text input
         prd_text = None
@@ -90,9 +90,9 @@ def transform_prd():
         else:
             return jsonify({'success': False, 'error': 'No file or text provided'}), 400
         
-        # Transform PRD using Claude AI
-        print("🤖 Transforming PRD with Claude AI...")
-        result = transform_to_mermaid(prd_text)
+        # Transform PRD using Gemini AI
+        print("🤖 Transforming PRD with Gemini AI...")
+        result = transform_to_diagram(prd_text)
         
         if not result:
             return jsonify({'success': False, 'error': 'AI transformation failed'}), 500
@@ -101,8 +101,8 @@ def transform_prd():
         
         return jsonify({
             'success': True,
-            'hybrid': result['hybrid'],
-            'flowchart': result['flowchart'],
+            'nodes': result['nodes'],
+            'connections': result['connections'],
             'gaps_detected': result.get('gaps', []),
             'input_length': len(prd_text)
         })
@@ -118,7 +118,7 @@ if __name__ == '__main__':
     print("\n" + "="*60)
     print("🚀 FlowPRD Backend Starting...")
     print("="*60)
-    print(f"\n🌐 API running on: http://localhost:5000")
+    print(f"\n🌐 API running on: http://localhost:5001")
     print(f"📁 Upload folder: {UPLOAD_FOLDER.absolute()}")
     print(f"📊 Max file size: {MAX_FILE_SIZE // (1024*1024)}MB")
     print(f"✅ Allowed formats: {', '.join(ALLOWED_EXTENSIONS)}")
@@ -128,4 +128,4 @@ if __name__ == '__main__':
     print("\n🛑 Press CTRL+C to stop")
     print("="*60 + "\n")
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5001)

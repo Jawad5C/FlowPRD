@@ -11,7 +11,7 @@ Before you begin, ensure you have the following installed:
 - **Python 3.9+** - [Download here](https://www.python.org/downloads/)
 - **Node.js 18+** - [Download here](https://nodejs.org/)
 - **npm** (comes with Node.js)
-- **Claude API Key** - Get yours at [Anthropic Console](https://console.anthropic.com/)
+- **Gemini API Key** - Get yours at [Google AI Studio](https://aistudio.google.com/app/apikey) - FREE!
 
 ---
 
@@ -39,8 +39,8 @@ pip install -r requirements.txt
 # Create .env file
 cp .env.example .env
 
-# Edit .env and add your Claude API key
-# CLAUDE_API_KEY=your_actual_api_key_here
+# Edit .env and add your Gemini API key
+# GEMINI_API_KEY=your_actual_api_key_here
 ```
 
 ### 3. Frontend Setup
@@ -55,7 +55,6 @@ npm install
 # This will install:
 # - React 19.2.4
 # - Vite 6.2.0
-# - Mermaid 10.9.0
 # - TypeScript 5.8.2
 ```
 
@@ -109,9 +108,9 @@ You should see:
    - **Click** the upload area to browse files
    - **Switch to text mode** and paste your PRD directly
 
-3. **Click "Transform to Mermaid"**
+3. **Click "Transform to Visual Diagram"**
    - AI will analyze your PRD
-   - Generate both Hybrid and Flowchart versions
+   - Generate visual flowchart with all 10 standard sections
    - Detect any missing sections
 
 4. **View Results:**
@@ -136,11 +135,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**Problem:** `Claude API error`
+**Problem:** `Gemini API error`
 ```bash
 # Check your .env file
 cat .env
-# Make sure CLAUDE_API_KEY is set correctly
+# Make sure GEMINI_API_KEY is set correctly
 ```
 
 **Problem:** `Port 5000 already in use`
@@ -165,10 +164,11 @@ npm install
 lsof -ti:3000 | xargs kill -9
 ```
 
-**Problem:** Mermaid diagrams not rendering
+**Problem:** Diagrams not rendering
 - Hard refresh browser: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R` (Windows)
 - Check browser console for errors
 - Ensure backend is running
+- Hover over shapes to see full text tooltips
 
 ### Network Issues (Train/Limited Connectivity)
 
@@ -264,7 +264,7 @@ FlowPRD/
 
 ### Backend
 - **Flask 3.0.0** - Web framework
-- **Anthropic Claude Sonnet 4.5** - AI transformation
+- **Google Gemini 1.5 Pro** - FREE AI transformation (1M tokens!)
 - **python-docx 1.1.0** - Word document parsing
 - **PyPDF2 3.0.1** - PDF parsing
 - **python-dotenv 1.0.0** - Environment management
@@ -273,7 +273,7 @@ FlowPRD/
 - **React 19.2.4** - UI framework
 - **TypeScript 5.8.2** - Type safety
 - **Vite 6.2.0** - Build tool & dev server
-- **Mermaid 10.9.0** - Diagram rendering
+- **Custom SVG Rendering** - 7 shape types for PRD visualization
 
 ---
 

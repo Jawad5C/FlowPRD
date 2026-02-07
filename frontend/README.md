@@ -14,11 +14,23 @@ Visual PRD Generator built with React + TypeScript + React Flow + Mermaid.js
 
 ## Features
 
+<<<<<<< HEAD
 ### Phase 1: Foundation ✅
 - Shape palette toolbar with 7 UML-inspired shape types
 - Visual editor canvas with React Flow
 - Drag-and-drop functionality
 - Squid Game color palette integration
+=======
+- 📤 Drag & drop file upload
+- ✍️ Direct text paste
+- 🤖 AI transformation via Gemini
+- 📊 Visual diagram with custom SVG shapes
+- 🖱️ Hover tooltips showing full section text
+- 📋 Copy diagram as JSON
+- 💾 Download as JSON file
+- ⚠️ Gap detection with AI suggestions
+- ✅ Always shows all 10 standard PRD sections
+>>>>>>> 2aa74be493c8cc2d0d30fdf6d2788702d2b0e7ba
 
 ### Phase 2: Editor Features ✅
 - Inline shape editing (double-click to edit)
@@ -77,6 +89,7 @@ Visit http://localhost:3000
 npm run build
 ```
 
+<<<<<<< HEAD
 ### Preview Production Build
 
 ```bash
@@ -84,14 +97,38 @@ npm run preview
 ```
 
 ## Deployment
+=======
+2. Click "Transform to Visual Diagram"
+
+3. View results:
+   - 📊 Single flowchart with all 10 PRD sections
+   - 🖱️ Hover over any shape to see full text
+   - ⚠️ Missing sections shown with AI suggestions
+
+4. Export:
+   - 📋 Copy diagram data as JSON
+   - 💾 Download as .json file
+>>>>>>> 2aa74be493c8cc2d0d30fdf6d2788702d2b0e7ba
 
 ### Deploy to Vercel
 
+<<<<<<< HEAD
 **Option 1: One-Click Deploy**
+=======
+- React 19
+- TypeScript
+- Vite (dev server)
+- Custom SVG shape rendering (7 shape types)
+>>>>>>> 2aa74be493c8cc2d0d30fdf6d2788702d2b0e7ba
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/flowprd&project-name=flowprd-frontend&repository-name=flowprd&root-directory=frontend&env=VITE_API_URL&envDescription=Backend%20API%20URL&envLink=https://github.com/your-username/flowprd)
 
+<<<<<<< HEAD
 **Option 2: Vercel CLI**
+=======
+Frontend proxies API calls to Flask backend at `http://localhost:5001`:
+- `POST /api/transform` - Transform PRD to visual diagram data
+>>>>>>> 2aa74be493c8cc2d0d30fdf6d2788702d2b0e7ba
 
 ```bash
 # Install Vercel CLI
