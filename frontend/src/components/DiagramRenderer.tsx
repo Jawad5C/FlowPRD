@@ -30,10 +30,10 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
   const { nodes, connections } = data;
   
   // Calculate SVG dimensions based on node positions with extra padding
-  const maxX = Math.max(...nodes.map(n => n.x)) + 400;
-  const maxY = Math.max(...nodes.map(n => n.y)) + 300;
-  const minX = Math.min(...nodes.map(n => n.x)) - 400;
-  const minY = Math.min(...nodes.map(n => n.y)) - 300;
+  const maxX = Math.max(...nodes.map(n => n.x)) + 600;
+  const maxY = Math.max(...nodes.map(n => n.y)) + 500;
+  const minX = Math.min(...nodes.map(n => n.x)) - 600;
+  const minY = Math.min(...nodes.map(n => n.y)) - 500;
   
   const width = maxX - minX;
   const height = maxY - minY;
@@ -91,14 +91,14 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
         <defs>
           <marker
             id={markerId}
-            markerWidth="18"
-            markerHeight="18"
-            refX="15"
-            refY="9"
+            markerWidth="9"
+            markerHeight="9"
+            refX="8"
+            refY="4.5"
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <polygon points="0 0, 18 9, 0 18" fill="#94A3B8" />
+            <polygon points="0 0, 9 4.5, 0 9" fill="#94A3B8" />
           </marker>
         </defs>
         <line

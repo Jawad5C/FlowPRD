@@ -285,8 +285,9 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
     const tooltipPadding = 44;
     const tooltipLineHeight = 47;
     
-    // Wrap full text for tooltip
-    const tooltipLines = wrapText(fullText, 80); // ~80 chars per line for tooltip
+    // Wrap full text for tooltip - more conservative to prevent overflow
+    const maxTooltipChars = Math.floor((tooltipWidth - tooltipPadding * 2) / 14); // ~14px per char
+    const tooltipLines = wrapText(fullText, maxTooltipChars);
     const tooltipHeight = (tooltipLines.length * tooltipLineHeight) + (tooltipPadding * 2);
     
     // Position tooltip above the shape

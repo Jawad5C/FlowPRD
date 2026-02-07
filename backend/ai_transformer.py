@@ -118,11 +118,11 @@ POSITIONING RULES - COMPACT TOP-DOWN FLOW LAYOUT:
   * Node 7 (Metrics): x=3300, y=2550
   * Node 8 (Out of Scope): x=4350, y=2550
   
-  FINAL ROW - DECISIONS (spacing: 1050px between shapes):
+  FINAL ROW - DECISIONS (spacing: 1050px between shapes, 750px vertical like START→Problem):
   * Node 9 (Timeline): x=4350, y=3300
   * Node 10 (Dependencies): x=5400, y=3300
   
-  END:
+  END (750px below Dependencies, matching START→Problem vertical spacing):
   * Node 11 (END): x=5400, y=4050
 
 - Connect nodes following the specified flow:
