@@ -54,8 +54,8 @@ const DiagramRenderer: React.FC<DiagramRendererProps> = ({ data }) => {
     const angle = Math.atan2(dy, dx);
     
     // Shape dimensions (accounting for label space)
-    const shapeWidth = 320;
-    const shapeHeight = 140; // 120 + 20 for label space
+    const shapeWidth = 450; // Updated to match new shape size
+    const shapeHeight = 186; // 160 + 26 for label space
     
     // Calculate edge points based on angle
     // For "from" node - find exit point on edge
