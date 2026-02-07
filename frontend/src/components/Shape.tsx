@@ -42,7 +42,7 @@ const wrapText = (text: string, maxCharsPerLine: number): string[] => {
   return lines;
 };
 
-const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width = 320, height = 120 }) => {
+const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width = 450, height = 160 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   
   // Calculate max characters per line based on shape width
@@ -53,16 +53,16 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
   if (type === 'parallelogram') usableWidthPercent = 0.8; // Slanted sides
   
   const usableWidth = width * usableWidthPercent;
-  const maxCharsPerLine = Math.floor(usableWidth / 10); // ~10px per character at 17px font
+  const maxCharsPerLine = Math.floor(usableWidth / 12); // ~12px per character at 22px font
   
   // Wrap text to fit within shape
   const textLines = wrapText(text, maxCharsPerLine);
   
   // Adjust height if text needs more space
-  const fontSize = 17;
-  const lineHeight = 24;
-  const paddingVertical = 35;
-  const labelHeight = 20; // Space for shape type label
+  const fontSize = 22;
+  const lineHeight = 30;
+  const paddingVertical = 45;
+  const labelHeight = 26; // Space for shape type label
   const requiredHeight = (textLines.length * lineHeight) + paddingVertical + labelHeight;
   const finalHeight = Math.max(height, requiredHeight);
   
@@ -234,7 +234,7 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
   
   // Render shape type label (small text at top)
   const renderLabel = () => {
-    const labelY = y - finalHeight / 2 + 16; // Near top of shape
+    const labelY = y - finalHeight / 2 + 20; // Near top of shape
     
     return (
       <text
@@ -242,7 +242,7 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
         y={labelY}
         textAnchor="middle"
         fill="#94A3B8"
-        fontSize="10"
+        fontSize="14"
         fontFamily="Arial, sans-serif"
         fontWeight="600"
         opacity="0.8"
@@ -281,12 +281,12 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
   const renderTooltip = () => {
     if (!showTooltip) return null;
     
-    const tooltipWidth = 400;
-    const tooltipPadding = 20;
-    const tooltipLineHeight = 22;
+    const tooltipWidth = 500;
+    const tooltipPadding = 24;
+    const tooltipLineHeight = 26;
     
     // Wrap full text for tooltip
-    const tooltipLines = wrapText(fullText, 60); // ~60 chars per line for tooltip
+    const tooltipLines = wrapText(fullText, 65); // ~65 chars per line for tooltip
     const tooltipHeight = (tooltipLines.length * tooltipLineHeight) + (tooltipPadding * 2);
     
     // Position tooltip above the shape
@@ -311,17 +311,17 @@ const Shape: React.FC<ShapeProps> = ({ type, text, fullText, x, y, color, width 
         {/* Tooltip text */}
         <text
           x={tooltipX}
-          y={tooltipY + tooltipPadding + 14}
+          y={tooltipY + tooltipPadding + 16}
           textAnchor="middle"
           fill="#F1F5F9"
-          fontSize="14"
+          fontSize="16"
           fontFamily="Arial, sans-serif"
         >
           {tooltipLines.map((line, i) => (
             <tspan 
               key={i}
               x={tooltipX}
-              y={tooltipY + tooltipPadding + 14 + (i * tooltipLineHeight)}
+              y={tooltipY + tooltipPadding + 16 + (i * tooltipLineHeight)}
               textAnchor="middle"
             >
               {line}
