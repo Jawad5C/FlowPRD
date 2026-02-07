@@ -101,27 +101,27 @@ MANDATORY NODES (create ALL 12, including START/END):
 POSITIONING RULES - COMPACT TOP-DOWN FLOW LAYOUT:
 - CRITICAL: Use EXACTLY these coordinates:
   
-  TOP ROW (y=100):
-  * Node 0 (START): x=250, y=100
-  * Node 3 (Users): x=800, y=100
+  TOP ROW (y=150):
+  * Node 0 (START): x=300, y=150
+  * Node 3 (Users): x=1100, y=150
   
-  SECOND ROW (y=350):
-  * Node 1 (Problem): x=150, y=350
-  * Node 2 (Opportunity): x=350, y=350
-  * Node 4 (Solution): x=700, y=350
-  * Node 5 (Requirements): x=900, y=350
+  SECOND ROW (y=500):
+  * Node 1 (Problem): x=100, y=500
+  * Node 2 (Opportunity): x=500, y=500
+  * Node 4 (Solution): x=900, y=500
+  * Node 5 (Requirements): x=1300, y=500
   
-  THIRD ROW (y=600):
-  * Node 6 (Tech Stack): x=900, y=600
-  * Node 7 (Metrics): x=1200, y=600
-  * Node 8 (Out of Scope): x=1500, y=600
+  THIRD ROW (y=850):
+  * Node 6 (Tech Stack): x=1300, y=850
+  * Node 7 (Metrics): x=1700, y=850
+  * Node 8 (Out of Scope): x=2100, y=850
   
-  FOURTH ROW (y=850):
-  * Node 9 (Timeline): x=1500, y=850
-  * Node 10 (Dependencies): x=1800, y=850
+  FOURTH ROW (y=1200):
+  * Node 9 (Timeline): x=2100, y=1200
+  * Node 10 (Dependencies): x=2500, y=1200
   
-  BOTTOM (y=1100):
-  * Node 11 (END): x=1800, y=1100
+  BOTTOM (y=1550):
+  * Node 11 (END): x=2500, y=1550
 
 - Connect nodes following your specified flow:
   START → Problem (down-left), START → Opportunity (down-right)
