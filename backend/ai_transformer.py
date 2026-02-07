@@ -101,34 +101,39 @@ MANDATORY NODES (create ALL 12, including START/END):
 POSITIONING RULES - COMPACT TOP-DOWN FLOW LAYOUT:
 - CRITICAL: Use EXACTLY these coordinates:
   
-  TOP ROW (y=180):
-  * Node 0 (START): x=360, y=180
-  * Node 3 (Users): x=1320, y=180
+  TOP ROW (y=200):
+  * Node 0 (START): x=400, y=200
+  * Node 3 (Users): x=1400, y=200
   
-  SECOND ROW (y=600):
-  * Node 1 (Problem): x=120, y=600
-  * Node 2 (Opportunity): x=600, y=600
-  * Node 4 (Solution): x=1080, y=600
-  * Node 5 (Requirements): x=1560, y=600
+  LEFT COLUMN - VERTICAL (Problem & Opportunity):
+  * Node 1 (Problem): x=400, y=700
+  * Node 2 (Opportunity): x=400, y=1200
   
-  THIRD ROW (y=1020):
-  * Node 6 (Tech Stack): x=1560, y=1020
-  * Node 7 (Metrics): x=2040, y=1020
-  * Node 8 (Out of Scope): x=2520, y=1020
+  RIGHT COLUMN - SOLUTION PATH:
+  * Node 4 (Solution): x=1400, y=700
+  * Node 5 (Requirements): x=1400, y=1200
   
-  FOURTH ROW (y=1440):
-  * Node 9 (Timeline): x=2520, y=1440
-  * Node 10 (Dependencies): x=3000, y=1440
+  BOTTOM ROW - TECH & METRICS:
+  * Node 6 (Tech Stack): x=1400, y=1700
+  * Node 7 (Metrics): x=1900, y=1700
+  * Node 8 (Out of Scope): x=2400, y=1700
   
-  BOTTOM (y=1860):
-  * Node 11 (END): x=3000, y=1860
+  FINAL ROW - DECISIONS:
+  * Node 9 (Timeline): x=2400, y=2200
+  * Node 10 (Dependencies): x=2900, y=2200
+  
+  END:
+  * Node 11 (END): x=2900, y=2700
 
-- Connect nodes following your specified flow:
-  START → Problem (down-left), START → Opportunity (down-right)
-  Problem → Users (diagonal up-right), Opportunity → Users (diagonal up-right)
-  Users → Solution (down-left), Users → Requirements (down-right)
+- Connect nodes following the specified flow:
+  START → Problem (down)
+  Problem → Opportunity (down)
+  Opportunity → Users (up and right)
+  Users → Solution (down)
+  Solution → Requirements (down)
   Requirements → Tech Stack (down)
-  Tech Stack → Metrics (right), Metrics → Out of Scope (right)
+  Tech Stack → Metrics (right)
+  Metrics → Out of Scope (right)
   Out of Scope → Timeline (down)
   Timeline → Dependencies (right)
   Dependencies → END (down)
