@@ -11,7 +11,6 @@ import { generateMermaidCode } from './utils/export';
 import { API_ENDPOINTS, apiCall } from './utils/api';
 import { FileText } from 'lucide-react';
 
-<<<<<<< HEAD
 function App() {
   const [selectedShape, setSelectedShape] = useState<ShapeType | null>(null);
   const [nodes, setNodes] = useState<FlowNode[]>([]);
@@ -21,35 +20,6 @@ function App() {
   const [violations, setViolations] = useState<ConventionViolation[]>([]);
   const [conventionScore, setConventionScore] = useState(100);
   const [aiReadiness, setAiReadiness] = useState(true);
-=======
-interface Node {
-  id: string;
-  shape: string;
-  text: string;
-  fullText: string;  // NEW: Full PRD content for hover tooltip
-  x: number;
-  y: number;
-  color: string;
-}
-
-interface Connection {
-  from: string;
-  to: string;
-  label?: string;
-}
-
-interface DiagramData {
-  nodes: Node[];
-  connections: Connection[];
-}
-
-interface TransformResult {
-  nodes: Node[];
-  connections: Connection[];
-  gaps: string[];
-  inputLength: number;
-}
->>>>>>> 2aa74be493c8cc2d0d30fdf6d2788702d2b0e7ba
 
   // Update Mermaid code when nodes or edges change
   useEffect(() => {
@@ -57,7 +27,6 @@ interface TransformResult {
       const code = generateMermaidCode(nodes, edges);
       setMermaidCode(code);
       
-<<<<<<< HEAD
       // Mock validation (in real app, this would call backend)
       validatePRD(nodes);
     } else {
@@ -66,55 +35,6 @@ interface TransformResult {
       setViolations([]);
       setConventionScore(100);
       setAiReadiness(true);
-=======
-      if (typeof fileOrText === 'string') {
-        // Text input
-        const response = await fetch('/api/transform', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: fileOrText })
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-          setResult({
-            nodes: data.nodes,
-            connections: data.connections,
-            gaps: data.gaps_detected || [],
-            inputLength: data.input_length
-          });
-        } else {
-          setError(data.error || 'Transformation failed');
-        }
-      } else {
-        // File upload
-        formData.append('file', fileOrText);
-        
-        const response = await fetch('/api/transform', {
-          method: 'POST',
-          body: formData
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-          setResult({
-            nodes: data.nodes,
-            connections: data.connections,
-            gaps: data.gaps_detected || [],
-            inputLength: data.input_length
-          });
-        } else {
-          setError(data.error || 'Transformation failed');
-        }
-      }
-    } catch (err) {
-      console.error('Transform error:', err);
-      setError('Failed to connect to backend. Make sure Flask is running on port 5001.');
-    } finally {
-      setIsProcessing(false);
->>>>>>> 2aa74be493c8cc2d0d30fdf6d2788702d2b0e7ba
     }
   }, [nodes, edges]);
 
